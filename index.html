@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>منصة التدريب المركزي</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Tajawal:wght@400;500;700&display=swap">
+<style>
+/* Layout: plain white page, pastel accents only (cards, chips, tags), one column. Single light theme by choice. */
+:root{
+  --page:#ffffff; --bg:#f8f7fc; --card:#ffffff; --ink:#2f2b47; --muted:#7a7593; --line:#ece9f6;
+  --lav:#ece7fd; --blue:#e1effc; --peach:#ffe8de; --mint:#dff5ef; --butter:#fff4cc; --pink:#fde6ef;
+  --accent:#6a5cc4; --sun:#ffe7a3; --sun-ink:#664a00; --sun-edge:#f2d27c;
+  --teal:#2f9e8f; --teal-soft:#dcf4ee; --coral:#df7563; --coral-soft:#ffe5dd;
+  --good:#2f9e66; --good-soft:#e2f6eb; --warn:#c58a14; --warn-soft:#fff3d1; --bad:#d25a5a; --bad-soft:#fde7e7;
+  --display:"Baloo Bhaijaan 2","Tajawal",system-ui,sans-serif;
+  --body:"Tajawal",system-ui,"Segoe UI",Tahoma,sans-serif;
+  --r:20px; color-scheme:light;
+}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{background:var(--page);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65;direction:rtl}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.inner{max-width:880px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);line-height:1.25;margin:0;text-wrap:balance}
+
+/* header: plain white with a hairline */
+.hero{background:var(--page);color:var(--ink);border-bottom:1px solid var(--line)}
+.hero .inner{padding-block:18px 26px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:20px}
+.logo{width:40px;height:40px;border-radius:12px;background:var(--sun);color:var(--sun-ink);display:grid;place-items:center;font-size:22px;font-weight:800;transform:rotate(-6deg)}
+.nav{display:flex;gap:6px;flex-wrap:wrap}
+.nav button{background:var(--bg);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 14px;font-weight:700;font-size:15px}
+.nav button[aria-current="true"]{background:var(--accent);color:#fff}
+.who{font-size:14px;color:var(--muted);font-weight:700}
+
+main{padding-block:8px 56px}
+.stack{display:grid;gap:20px}
+.card{background:var(--card);border-radius:var(--r);padding:20px;border:1px solid var(--line)}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.03em;color:var(--muted)}
+.muted{color:var(--muted)}
+.btn{border:0;border-radius:14px;padding:12px 20px;font-weight:700;background:var(--sun);color:var(--sun-ink);box-shadow:0 4px 0 var(--sun-edge);transition:transform .1s}
+.btn:active{transform:translateY(3px);box-shadow:none}
+.btn.alt{background:var(--card);color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.btn.wide{width:100%}
+.field{display:grid;gap:6px}
+.field label{font-weight:700;font-size:15px}
+input[type=text],input[type=password],select,textarea{width:100%;border:2px solid var(--line);background:var(--bg);border-radius:14px;padding:12px 14px;font-size:17px}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none}
+.err{color:var(--bad);font-weight:700;font-size:15px;min-height:1.2em}
+
+/* login */
+.login{max-width:460px;margin:0 auto;width:100%}
+.cgroups{display:grid;gap:12px}
+.cgroup{display:grid;gap:6px}
+.cg-h{font-size:14px;font-weight:700;color:var(--muted)}
+.crow{display:grid;gap:8px}
+.crow.b{grid-template-columns:repeat(2,1fr)} .crow.g{grid-template-columns:repeat(3,1fr)}
+.cls{border:2px solid var(--line);border-radius:14px;padding:12px 6px;font-weight:700;font-size:18px;font-family:var(--display);text-align:center;font-variant-numeric:tabular-nums}
+.cls[data-g="b"]{background:var(--blue)} .cls[data-g="g"]{background:var(--pink)}
+.cls[aria-pressed="true"]{border-color:var(--accent);background:var(--lav);color:var(--accent);box-shadow:0 0 0 2px var(--lav)}
+
+/* info */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.info{border-radius:16px;padding:16px;display:grid;gap:6px;align-content:start}
+.info h3{font-size:19px}
+.info p{margin:0;font-size:16px}
+.i1{background:var(--mint)} .i2{background:var(--peach)} .i3{background:var(--butter)} .i4{background:var(--lav)}
+.tag{display:inline-block;font-weight:800;font-family:var(--display);font-size:13px;padding:2px 10px;border-radius:999px;background:var(--card)}
+
+/* picker */
+.steps{display:grid;gap:16px}
+.step-h{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:18px}
+.step-h .n{width:30px;height:30px;border-radius:50%;background:var(--lav);color:var(--accent);display:grid;place-items:center;font-size:15px;flex:none}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chip{border:2.5px solid var(--line);background:var(--card);border-radius:16px;padding:14px;font-weight:700;font-size:18px;display:flex;align-items:center;gap:10px;justify-content:center}
+.chip .g{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:20px}
+.chip[data-s="lughati"] .g{background:var(--teal-soft);color:var(--teal)}
+.chip[data-s="math"] .g{background:var(--coral-soft);color:var(--coral)}
+.chip[aria-pressed="true"]{border-color:var(--cur,var(--accent));background:var(--cur-soft,var(--lav))}
+.chip:disabled{opacity:.45;cursor:not-allowed}
+
+/* 4 tools */
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tool{border:2.5px solid var(--line);background:var(--card);border-radius:16px;padding:12px 8px;display:grid;gap:4px;justify-items:center;font-weight:700;font-size:15px;text-align:center}
+.tool .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:20px;background:var(--bg);color:var(--cur)}
+.tool[aria-pressed="true"]{border-color:var(--cur);background:var(--cur-soft);color:var(--ink)}
+.tool[aria-pressed="true"] .ic{background:var(--card);color:var(--cur)}
+.panel{border-top:4px solid var(--cur)}
+
+.explain{display:grid;gap:14px}
+.explain .rule{background:var(--bg);border-radius:14px;padding:14px 16px}
+.explain .rule h4{margin:0 0 4px;font-family:var(--display);font-size:18px;color:var(--cur)}
+.explain .rule p{margin:0}
+.ex{margin-top:8px;font-weight:700;background:var(--card);border:2px dashed var(--line);border-radius:12px;padding:8px 12px}
+
+/* quiz */
+.qtop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--cur);border-radius:99px;transition:width .3s}
+.q{font-size:clamp(20px,4.8vw,25px);font-weight:700;line-height:1.7;min-width:0}
+.big{font-family:var(--display);font-size:1.2em;direction:ltr;unicode-bidi:isolate;display:inline-block}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{border:2.5px solid var(--line);background:var(--bg);border-radius:14px;padding:12px;font-weight:700;font-size:19px;min-height:58px}
+.opt.right{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.opt:disabled{cursor:default}
+.fb{min-height:26px;font-weight:700}
+.fb.good{color:var(--good)} .fb.bad{color:var(--bad)}
+.result{text-align:center;display:grid;gap:8px;justify-items:center}
+.result .num{font-family:var(--display);font-size:64px;font-weight:800;color:var(--cur);line-height:1;font-variant-numeric:tabular-nums}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* bank */
+.bank{display:grid;gap:12px}
+.bq{border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:8px}
+.bq .qn{font-weight:700}
+.bq .o{display:flex;flex-wrap:wrap;gap:6px}
+.bq .o button{border:2px solid var(--line);background:var(--bg);border-radius:10px;padding:6px 14px;font-weight:700}
+.bq .o button.right{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.bq .o button.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.sticky-bank{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--lav);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:10px 14px;font-weight:700}
+
+/* survey */
+.sq{display:grid;gap:8px;padding-block:12px;border-bottom:1px solid var(--line)}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale button{border:2px solid var(--line);background:var(--bg);border-radius:12px;padding:8px 4px;font-weight:700;font-size:14px;display:grid;justify-items:center;gap:2px}
+.scale button b{font-family:var(--display);font-size:20px}
+.scale button[aria-pressed="true"]{border-color:var(--accent);background:var(--lav);color:var(--accent)}
+.scale3{grid-template-columns:repeat(3,1fr)}
+
+/* dashboard */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:2px}
+.tile b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.2}
+.tile span{font-size:14px;color:var(--muted);font-weight:700}
+.filters{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;gap:4px}
+.seg button{flex:1;border:0;background:transparent;border-radius:999px;padding:8px 6px;font-weight:700;color:var(--muted);font-size:15px}
+.seg button[aria-pressed="true"]{background:var(--lav);color:var(--accent)}
+.bars{display:grid;gap:10px}
+.brow{display:grid;grid-template-columns:minmax(90px,30%) 1fr 52px;gap:10px;align-items:center}
+.brow .lbl{font-weight:700;font-size:15px;min-width:0;overflow-wrap:anywhere;line-height:1.35}
+.brow .lbl small{display:block;color:var(--muted);font-weight:500;font-size:12px}
+.track{height:16px;background:var(--bg);border-radius:99px;overflow:hidden;position:relative}
+.track i{display:block;height:100%;border-radius:99px}
+.track .mark{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--muted);opacity:.5}
+.brow .v{font-weight:800;font-variant-numeric:tabular-nums;text-align:left;font-family:var(--display)}
+.lv-good{background:#7fd1a5} .lv-mid{background:#f5cf6e} .lv-bad{background:#f19a9a}
+.pill{display:inline-block;padding:1px 10px;border-radius:999px;font-size:13px;font-weight:700}
+.p-good{background:var(--good-soft);color:var(--good)} .p-mid{background:var(--warn-soft);color:var(--warn)} .p-bad{background:var(--bad-soft);color:var(--bad)}
+.sw{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sw ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.sw li{display:flex;justify-content:space-between;gap:8px;background:var(--bg);border-radius:12px;padding:8px 12px;font-weight:700;font-size:15px}
+.sw li b{font-variant-numeric:tabular-nums;font-family:var(--display)}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{padding:10px 8px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--muted);font-size:13px}
+td.num{font-variant-numeric:tabular-nums;font-weight:700}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:4px}
+.delbtn{border:1.5px solid var(--bad-soft);background:var(--card);color:var(--bad);border-radius:10px;padding:4px 10px;font-weight:700;font-size:13px}
+.delbtn:hover{background:var(--bad-soft)}
+.confirm{background:var(--bad-soft);border-radius:16px;padding:14px;display:grid;gap:10px}
+.btn.danger{background:var(--bad);color:#fff;box-shadow:none}
+.passage{background:var(--butter);border-radius:16px;padding:16px 18px;display:grid;gap:6px}
+.passage h3{font-size:22px;color:var(--accent)}
+.passage p{margin:0;font-size:19px;line-height:2;max-width:65ch}
+.sugg{display:grid;gap:8px}
+.sugg div{background:var(--bg);border-radius:12px;padding:10px 12px;font-size:15px}
+.sugg small{color:var(--muted)}
+.notice{background:var(--warn-soft);color:var(--ink);border-radius:14px;padding:12px 14px;font-size:15px}
+.empty{text-align:center;padding:28px 16px;display:grid;gap:10px;justify-items:center}
+
+.school{display:grid;gap:2px;padding:14px 16px;border-radius:16px;background:var(--bg);border:1px solid var(--line)}
+.sname{font-family:"Tajawal",system-ui,sans-serif;font-weight:700;font-size:clamp(22px,5.6vw,30px);line-height:1.35;color:var(--ink)}
+.sprin{font-size:16px;font-weight:700;color:var(--muted)}
+.site-foot{border-top:1px solid var(--line);padding-block:18px calc(18px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--muted);font-size:14px;background:var(--page)}
+.site-foot b{color:var(--ink)}
+.net{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;background:var(--bg);color:var(--muted)}
+.net::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.net.on{background:var(--good-soft);color:var(--good)} .net.on::before{background:var(--good)}
+.net.off{background:var(--warn-soft);color:var(--warn)} .net.off::before{background:var(--warn)}
+.journey{background:linear-gradient(135deg,var(--mint),var(--blue));border:0}
+.jgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.jgrid .tile{background:rgba(255,255,255,.75);border:0}
+.saved{font-size:13px;font-weight:700;color:var(--good)}
+@media (max-width:640px){
+  .tools{grid-template-columns:repeat(2,1fr)}
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .jgrid .tile{padding:10px}.jgrid .tile b{font-size:24px}.jgrid .tile span{font-size:12px}
+  .filters{grid-template-columns:1fr}
+  .sw{grid-template-columns:1fr}
+}
+@media (max-width:420px){.opts{grid-template-columns:1fr}.scale button span{font-size:12px}}
+@media (prefers-reduced-motion:reduce){.balloon{animation:none!important}.bar i{transition:none}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+
+<!-- مكتبة Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ====== إعدادات Firebase: الصقي هنا بيانات مشروعك من Firebase (Project settings › Your apps) ====== */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCve9Q3f6vXoyHIoJH9T7ERvyh4u65duOs",
+  authDomain: "training2027h.firebaseapp.com",
+  projectId: "training2027h",
+  storageBucket: "training2027h.firebasestorage.app",
+  messagingSenderId: "748851896226",
+  appId: "1:748851896226:web:9723deb1c73b0dc9e05cfb"
+};
+</script>
+
+<script>
+/* ================= helpers ================= */
+const ar=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+function numQ(text,ans,spread){const s=new Set([ans]);let g=0;while(s.size<4&&g++<80){const d=ans+R(-spread,spread);if(d>=0&&d!==ans)s.add(d)}let k=1;while(s.size<4)s.add(ans+Math.max(spread,1)*k++);return{q:text,a:ar(ans),o:shuffle([...s]).map(ar)}}
+const big=x=>`<span class="big">${x}</span>`;
+const lvl=p=>p>=80?'good':p>=60?'mid':'bad';
+const lvlName=p=>p>=80?'قوة':p>=60?'متوسط':'ضعف';
+
+const CLASSES=[['ثالث/1 بنين','b'],['ثالث/2 بنين','b'],['ثالث/1 بنات','g'],['ثالث/2 بنات','g'],['ثالث/3 بنات','g']];
+const clsLabel=c=>{const [n,g]=c.split(' ');return n.replace('ثالث/','ثالث/')};
+
+/* ================= math generators ================= */
+const M={
+ place:()=>{const n=R(1000,9999),p=R(0,3),names=['الآحاد','العشرات','المئات','الآلاف'],d=+String(n)[3-p];const o=[...new Set([d,...String(n).split('').map(Number),(d+3)%10,(d+7)%10])].slice(0,4);return{q:`ما الرقم في منزلة ${names[p]} في العدد ${big(ar(n))}؟`,a:ar(d),o:shuffle(o).map(ar)}},
+ value:()=>{const n=R(1000,9999),p=R(1,3);let d=+String(n)[3-p];if(!d)d=1;const m=String(n).split('');m[3-p]=String(d);const nn=+m.join('');const v=d*10**p;const o=shuffle([...new Set([v,d,d*10**((p%3)+1),d*10**(p===1?2:1)])]);return{q:`ما قيمة الرقم ${ar(d)} في العدد ${big(ar(nn))}؟`,a:ar(v),o:o.map(ar)}},
+ compare:()=>{let a=R(1000,9999),b=R(1000,9999);if(a===b)b++;return{q:`اختر الإشارة المناسبة: ${big(ar(a)+' ○ '+ar(b))}`,a:a>b?'>':'<',o:['>','<','=']}},
+ order:()=>{const xs=[...new Set([R(100,999),R(100,999),R(100,999),R(100,999)])];const t=R(0,1);const s=xs.slice().sort((x,y)=>x-y);return{q:`ما ${t?'أكبر':'أصغر'} عدد بين: ${big(xs.map(ar).join('، '))}؟`,a:ar(t?s[s.length-1]:s[0]),o:shuffle(xs).map(ar)}},
+ round10:()=>{const n=R(11,989);return numQ(`قرّب العدد ${big(ar(n))} إلى أقرب عشرة`,Math.round(n/10)*10,20)},
+ round100:()=>{const n=R(110,9890);return numQ(`قرّب العدد ${big(ar(n))} إلى أقرب مئة`,Math.round(n/100)*100,200)},
+ add2:()=>{const a=R(10,89),b=R(10,89);return numQ(big(ar(a)+' + '+ar(b)+' = ؟'),a+b,12)},
+ add3:()=>{const a=R(100,899),b=R(100,899);return numQ(big(ar(a)+' + '+ar(b)+' = ؟'),a+b,30)},
+ addEst:()=>{const a=R(110,480),b=R(110,480);return numQ(`قدّر ناتج ${big(ar(a)+' + '+ar(b))} بالتقريب إلى أقرب مئة`,Math.round(a/100)*100+Math.round(b/100)*100,200)},
+ addProp:()=>{const a=R(2,40),b=R(2,40);return R(0,1)?numQ(big(ar(a)+' + '+ar(b)+' = '+ar(b)+' + ؟'),a,6):numQ(big(ar(a)+' + ٠ = ؟'),a,5)},
+ sub2:()=>{const a=R(30,99),b=R(10,a-5);return numQ(big(ar(a)+' − '+ar(b)+' = ؟'),a-b,10)},
+ sub3:()=>{const a=R(300,999),b=R(100,a-50);return numQ(big(ar(a)+' − '+ar(b)+' = ؟'),a-b,30)},
+ subZero:()=>{const a=[300,400,500,600,700,800,900,1000][R(0,7)],b=R(101,a-40);return numQ(big(ar(a)+' − '+ar(b)+' = ؟'),a-b,20)},
+ subWord:()=>{const ns=['سارة','خالد','ريم','فهد','نورة','سلمان'],n=ns[R(0,5)],a=R(40,95),b=R(10,a-10);return numQ(`مع ${n} ${ar(a)} ريالًا، اشترى قصةً بـ ${ar(b)} ريالًا. كم بقي معه؟`.replace('اشترى',['سارة','ريم','نورة'].includes(n)?'اشترت':'اشترى').replace('معه؟',['سارة','ريم','نورة'].includes(n)?'معها؟':'معه؟'),a-b,10)},
+ mulMean:()=>{const g=R(2,5),n=R(2,6);return numQ(`${ar(g)} صناديق، في كل صندوق ${ar(n)} أقلام. كم قلمًا في الصناديق كلها؟`,g*n,6)},
+ mulRep:()=>{const n=R(2,9),k=R(2,5);return numQ(`${big(Array(k).fill(ar(n)).join(' + '))} = ${big(ar(k)+' × '+ar(n))} = ؟`,k*n,6)},
+ mulBy:f=>()=>{const n=R(0,10),t=R(0,2),sp=f>3?f:4;if(t===0)return numQ(big(ar(f)+' × '+ar(n)+' = ؟'),f*n,sp);if(t===1)return numQ(big(ar(n)+' × '+ar(f)+' = ؟'),f*n,sp);const m=R(1,10);return numQ(big(ar(f)+' × ؟ = '+ar(f*m)),m,3)},
+ mul01:()=>{const n=R(2,99),z=R(0,1);return numQ(big(ar(n)+' × '+ar(z)+' = ؟'),n*z,3)},
+ mulComm:()=>{const a=R(2,9),b=R(2,9);return numQ(big(ar(a)+' × '+ar(b)+' = '+ar(b)+' × ؟'),a,4)},
+ mulAssoc:()=>{const a=R(2,4),b=R(2,3),c=R(2,4);return numQ(big('('+ar(a)+' × '+ar(b)+') × '+ar(c)+' = ؟'),a*b*c,8)},
+ divSub:()=>{const d=R(2,5),q=R(2,6);return numQ(`طرحنا ${ar(d)} من ${ar(d*q)} مرةً بعد مرة حتى وصلنا إلى الصفر. كم مرة طرحنا؟`,q,3)},
+ divMul:()=>{const d=R(2,9),q=R(2,9);return numQ(`إذا كان ${big(ar(d)+' × '+ar(q)+' = '+ar(d*q))} فإن ${big(ar(d*q)+' ÷ '+ar(d)+' = ؟')}`,q,3)},
+ divBy:f=>()=>{const q=R(1,10);return numQ(big(ar(f*q)+' ÷ '+ar(f)+' = ؟'),q,3)},
+ div01:()=>{const n=R(2,30),t=R(0,2);if(t===0)return numQ(big(ar(n)+' ÷ ١ = ؟'),n,4);if(t===1)return numQ(big('٠ ÷ '+ar(n)+' = ؟'),0,3);return numQ(big(ar(n)+' ÷ '+ar(n)+' = ؟'),1,3)},
+ len:()=>{const m=R(1,9);return R(0,1)?numQ(`${ar(m)} متر = كم سنتمترًا؟`,m*100,100):numQ(`${ar(m*100)} سنتمتر = كم مترًا؟`,m,3)},
+ mass:()=>{const k=R(1,9);return numQ(`${ar(k)} كيلوجرام = كم جرامًا؟`,k*1000,1000)},
+ cap:()=>{const l=R(1,9);return numQ(`${ar(l)} لتر = كم مليلترًا؟`,l*1000,1000)},
+ time:()=>{const t=R(0,2);if(t===0){const h=R(1,4);return numQ(`${ar(h)} ساعات = كم دقيقة؟`,h*60,30)}if(t===1){const d=R(1,4);return numQ(`${ar(d)} أسابيع = كم يومًا؟`,d*7,7)}const h=R(1,9);return numQ(`بدأ الدرس الساعة ${ar(h)} وانتهى بعد ساعتين. متى انتهى؟`,h+2,2)},
+ shapes:()=>{const S=[['المثلث',3],['المربع',4],['المستطيل',4],['الشكل الخماسي',5],['الشكل السداسي',6],['الشكل الثماني',8]];const s=S[R(0,5)];if(R(0,1))return numQ(`كم ضلعًا لـ${s[0]}؟`,s[1],2);if(R(0,1))return numQ(`كم رأسًا لـ${s[0]}؟`,s[1],2);const n=[3,5,6,8][R(0,3)];const nm=S.find(x=>x[1]===n)[0];return{q:`شكل مغلق له ${ar(n)} أضلاع، ما اسمه؟`,a:nm,o:shuffle(['المثلث','المربع','الشكل الخماسي','الشكل السداسي','الشكل الثماني'].filter(x=>x!==nm).slice(0,3).concat(nm))}},
+ solids:()=>{const s=[['المكعب',6,'وجهًا'],['متوازي المستطيلات',6,'وجهًا'],['المكعب',8,'رأسًا'],['المكعب',12,'حرفًا'],['الهرم الرباعي',5,'أوجه'],['الهرم الرباعي',5,'رؤوس'],['الهرم الرباعي',8,'أحرف'],['متوازي المستطيلات',8,'رؤوس'],['متوازي المستطيلات',12,'حرفًا'],['المنشور الثلاثي',5,'أوجه'],['المنشور الثلاثي',6,'رؤوس'],['المنشور الثلاثي',9,'أحرف']][R(0,11)];return numQ(`كم ${s[2]} لـ${s[0]}؟`,s[1],3)},
+ perim:()=>{const a=R(2,9),b=R(2,9);return numQ(`مستطيل طوله ${ar(a)} سم وعرضه ${ar(b)} سم. ما محيطه بالسنتمترات؟`,2*(a+b),6)},
+ area:()=>{const a=R(2,9),b=R(2,9);return numQ(`مستطيل طوله ${ar(a)} وحدات وعرضه ${ar(b)} وحدات. ما مساحته بالوحدات المربعة؟`,a*b,6)},
+ frac:()=>{const d=R(2,8),n=R(1,d-1);return{q:`قُسّمت فطيرة إلى ${ar(d)} أجزاء متساوية وأُكل منها ${ar(n)}. ما الكسر الذي يمثّل ما أُكل؟`,a:`${n}/${d}`,o:shuffle([...new Set([`${n}/${d}`,`${d-n}/${d}`,`${n}/${d+1}`,`${d}/${n}`])])}},
+ fracSet:()=>{const t=R(4,9),r=R(1,t-1);return{q:`في السلة ${ar(t)} تفاحات، منها ${ar(r)} حمراء. ما كسر التفاح الأحمر؟`,a:`${r}/${t}`,o:shuffle([...new Set([`${r}/${t}`,`${t-r}/${t}`,`${t}/${r}`,`${r}/${t+1}`])])}},
+ fracEq:()=>{const d=[2,3,4][R(0,2)],n=R(1,d-1),k=R(2,3);return numQ(`${big(n+'/'+d+' = ؟/'+(d*k))} ما البسط الناقص؟`,n*k,3)},
+ pattern:()=>{const st=R(0,1)?1:-1,d=[2,3,5,10,25,50,100][R(0,6)],a=st>0?R(1,60)*(d>10?10:1):R(30,90)*(d>10?10:1)+d*5;const t=[0,1,2,3].map(i=>a+st*d*i);return numQ(`ما العدد التالي في النمط: ${big(t.map(ar).join('، ')+'، ؟')}`,a+st*d*4,d)},
+ steps4:()=>{const T=[['في مكتبة الفصل %a قصة و%b كتاب علوم. كم كتابًا في المكتبة؟',1],['جمع خالد %a طابعًا، ثم أهداه أبوه %b طابعًا. كم طابعًا صار معه؟',1],['في الحافلة %a راكبًا، نزل منهم %b. كم راكبًا بقي؟',-1],['قطعت نورة %a مترًا، ثم %b مترًا. كم مترًا قطعت؟',1],['مع ريم %a ريالًا، صرفت %b ريالًا. كم بقي معها؟',-1]];const t=T[R(0,4)];const a=R(40,300),b=R(10,t[1]<0?a-10:250);return numQ(t[0].replace('%a',ar(a)).replace('%b',ar(b)),t[1]>0?a+b:a-b,15)},
+ place10k:()=>{const n=R(10000,99999),p=R(0,4),names=['الآحاد','العشرات','المئات','الألوف','عشرات الألوف'],d=+String(n)[4-p];const o=[...new Set([d,...String(n).split('').map(Number),(d+3)%10,(d+7)%10])].slice(0,4);return{q:`ما الرقم في منزلة ${names[p]} في العدد ${big(ar(n))}؟`,a:ar(d),o:shuffle(o).map(ar)}},
+ round1000:()=>{const n=R(1100,9899);return numQ(`قرّب العدد ${big(ar(n))} إلى أقرب ألف`,Math.round(n/1000)*1000,2000)},
+ exactEst:()=>{const B=[['تريد أن تعرف تقريبًا كم طالبًا في المدرسة كلها.','جواب تقديري'],['تدفع ثمن مشترياتك للبائع.','جواب دقيق'],['تحسب كم ريالًا تحتاج تقريبًا للرحلة.','جواب تقديري'],['تكتب درجة الاختبار في الشهادة.','جواب دقيق'],['تتوقع كم ساعة تحتاج تقريبًا للوصول إلى مكة.','جواب تقديري'],['تحسب عدد المقاعد اللازمة لكل ضيف في الحفل.','جواب دقيق'],['تريد معرفة هل يكفيك ١٠٠ ريال تقريبًا لشراء ثلاث هدايا.','جواب تقديري'],['تعطي الصيدلي ثمن الدواء.','جواب دقيق']];const b=B[R(0,7)];return{q:`${b[0]} هل تحتاج إلى جواب دقيق أم تقديري؟`,a:b[1],o:['جواب دقيق','جواب تقديري']}},
+ subEst:()=>{const a=R(420,980),b=R(110,a-150);return numQ(`قدّر ناتج ${big(ar(a)+' − '+ar(b))} بالتقريب إلى أقرب مئة`,Math.round(a/100)*100-Math.round(b/100)*100,200)},
+ reasonable:()=>{const a=R(300,900),b=R(100,a-100),x=a-b,r=Math.round(x/10)*10;const o=shuffle([...new Set([r,r+300,Math.max(10,Math.round(r/10/10)*10),r*10])]);return{q:`أيّ الأجوبة معقول لـ ${big(ar(a)+' − '+ar(b))}؟ (اختر الأقرب)`,a:'حوالي '+ar(r),o:o.map(v=>'حوالي '+ar(v))}},
+ chooseOp:()=>{const T=[['في صف %a طالبًا، وانضم إليهم %b. كم صار عددهم؟','الجمع'],['اشترى سعد %a بالونًا، طار منها %b. كم بقي؟','الطرح'],['في %a علب، في كل علبة %b أقلام. كم قلمًا؟','الضرب'],['كم يزيد %a على %b؟','الطرح'],['قرأت هيا %a صفحة أمس و%b صفحة اليوم. كم صفحة قرأت؟','الجمع'],['لدى المعلمة %a صفوف، في كل صف %b مقاعد. كم مقعدًا؟','الضرب']];const t=T[R(0,5)];return{q:t[0].replace('%a',ar(R(3,9))).replace('%b',ar(R(2,9)))+' ما العملية المناسبة؟',a:t[1],o:['الجمع','الطرح','الضرب']}},
+ arrays:()=>{const r=R(2,6),c=R(2,9);return numQ(`شبكة فيها ${ar(r)} صفوف، وفي كل صف ${ar(c)} مربعات. كم مربعًا في الشبكة؟`,r*c,6)},
+ extraInfo:()=>{const B=[['اشترى خالد ٣ أقلام بـ ٦ ريالات، وعمره ٩ سنوات. كم ثمن القلم؟','عمر خالد'],['في الحديقة ٤ صفوف من الأشجار، في كل صف ٥ أشجار، والحديقة تفتح الساعة ٨. كم شجرة؟','موعد فتح الحديقة'],['قرأت سارة ١٠ صفحات يوم الأحد، وكانت ترتدي ثوبًا أزرق. كم صفحة قرأت؟','لون الثوب'],['في الحافلة ٢٠ طالبًا، والسائق اسمه فهد، ونزل ٥ طلاب. كم بقي؟','اسم السائق'],['لدى ريم ٢ علب، في كل علبة ٦ حلوى، ولديها أخت واحدة. كم حلوى عند ريم؟','عدد أخواتها'],['اشترت نورة ٥ دفاتر يوم الاثنين، ثمن الدفتر ٢ ريال. كم دفعت؟','يوم الشراء'],['في الفصل ٦ صفوف، في كل صف ٤ طلاب، ومعلمتهم تحب القراءة. كم طالبًا؟','هواية المعلمة'],['ركض فهد ٣ دورات صباحًا و٢ مساءً، والطقس مشمس. كم دورة ركض؟','حالة الطقس'],['في السلة ١٠ تفاحات لونها أحمر، أُكل منها ٤. كم بقي؟','لون التفاح'],['لدى جود ٣ قصص، في كل قصة ١٠ صفحات، وطولها ٢٠ سم. كم صفحة؟','طول القصة']];const b=B[R(0,B.length-1)];const all=shuffle(B.map(x=>x[1]).filter(x=>x!==b[1])).slice(0,2);return{q:`${b[0]} ما المعلومة الزائدة؟`,a:b[1],o:shuffle([b[1],...all])}},
+ investigate:()=>{const f=[2,4,5,10][R(0,3)],n=R(2,9);const T=[`في المزرعة ${ar(n)} أبقار، لكل بقرة ${ar(4)} أرجل. كم رجلًا؟`,`مع فهد ${ar(n)} أوراق نقدية من فئة ${ar(f)} ريالات. كم ريالًا معه؟`,`يقرأ سلمان ${ar(f)} صفحات يوميًا. كم صفحة يقرأ في ${ar(n)} أيام؟`];const k=R(0,2);return numQ(T[k],k===0?n*4:f*n,6)},
+ patternMul:()=>{const f=R(2,9),s0=R(1,4);const t=[0,1,2,3].map(i=>f*(s0+i));return numQ(`ابحث عن النمط: ${big(t.map(ar).join('، ')+'، ؟')}`,f*(s0+4),f)},
+ fracCmp:()=>{const d=R(3,9);let a=R(1,d-1),b=R(1,d-1);if(a===b)b=a===1?2:a-1;const t=R(0,1);return{q:`أيّ الكسرين ${t?'أكبر':'أصغر'}: ${big(a+'/'+d)} أم ${big(b+'/'+d)}؟`,a:`${t?Math.max(a,b):Math.min(a,b)}/${d}`,o:shuffle([`${a}/${d}`,`${b}/${d}`])}}
+};
+
+/* ================= lughati banks ================= */
+const LS={
+ read:'الفهم القرائي', taa:'التاء المربوطة والمفتوحة', lam:'اللام الشمسية والقمرية', plural:'المفرد والمثنى والجمع',
+ opp:'الضد والمرادف', sentence:'الجملة الاسمية والفعلية', verb:'أنواع الفعل', hamza:'الهمزة المتوسطة', madd:'حروف المد'
+};
+const LX={
+ read:['اقرأ النص مرتين، ثم اقرأ السؤال وابحث عن الكلمة المهمة فيه (مَن، أين، متى، لماذا). عُد إلى النص وحدّد الجملة التي تحمل الجواب.','«ذهب سعد إلى المكتبة صباحًا». متى ذهب سعد؟ ← صباحًا'],
+ taa:['التاء المربوطة (ة) تُنطق هاءً عند الوقف وتاءً عند الوصل، وتأتي في آخر الأسماء مثل: شجرة. التاء المفتوحة (ت) تُنطق تاءً دائمًا مثل: بيت، وتأتي في الجمع مثل: معلمات.','قِف على الكلمة: إن نطقتها هاءً فهي (ة) مثل «مدرسه ← مدرسة»، وإن بقيت تاءً فهي (ت) مثل «بيت».'],
+ lam:['اللام الشمسية تُكتب ولا تُنطق، ويُشدَّد الحرف الذي بعدها مثل: الشّمس. اللام القمرية تُكتب وتُنطق مثل: القمر. الحروف القمرية تجمعها عبارة «ابغِ حجّك وخَفْ عقيمه».','النّهر ← شمسية (لا تُنطق اللام). الكتاب ← قمرية (تُنطق اللام).'],
+ plural:['المثنى يدل على اثنين ويُزاد في آخره (ان) أو (ين). جمع المذكر السالم يُزاد في آخره (ون) أو (ين). جمع المؤنث السالم يُزاد في آخره (ات). جمع التكسير يتغير فيه شكل المفرد.','معلّم ← معلّمان ← معلّمون. طالبة ← طالبات. كتاب ← كُتُب.'],
+ opp:['الضد كلمة تعطي المعنى المعاكس، والمرادف كلمة تعطي المعنى نفسه. اقرأ الجملة وضع الكلمة الجديدة مكان القديمة لتتأكد.','كريم ضدها بخيل. فرِح مرادفها سعيد.'],
+ sentence:['الجملة الاسمية تبدأ باسم وتتكون من مبتدأ وخبر. الجملة الفعلية تبدأ بفعل وتتكون من فعل وفاعل.','«البحرُ واسعٌ» اسمية. «يقرأُ خالدٌ» فعلية.'],
+ verb:['الفعل الماضي حدث وانتهى (كتبَ). الفعل المضارع يحدث الآن ويبدأ بأحد حروف «أنيت» (يكتبُ). فعل الأمر طلب لفعل شيء (اكتبْ).','عمِلَ ← ماضٍ، يعملُ ← مضارع، اعملْ ← أمر.'],
+ hamza:['الهمزة المتوسطة تُكتب حسب أقوى الحركتين: حركتها وحركة الحرف قبلها. الكسرة أقوى وتناسبها الياء (ئ)، ثم الضمة وتناسبها الواو (ؤ)، ثم الفتحة وتناسبها الألف (أ).','سأل (فتحة) ← أ. مؤمن (ضمة) ← ؤ. بئر (كسرة) ← ئ.'],
+ madd:['حروف المد ثلاثة: الألف بعد فتحة (با)، والواو بعد ضمة (بو)، والياء بعد كسرة (بي). المد يطيل الصوت عند القراءة.','نور ← مد بالواو. سفينة ← مد بالياء. عالِم ← مد بالألف.']
+};
+const LB={
+ read:[['«سافر عادل مع أبيه في الطائرة إلى أبها». إلى أين سافر عادل؟','أبها',['جدة','أبها','الدمام']],['«الرياض عاصمة المملكة العربية السعودية». ما عاصمة المملكة؟','الرياض',['جدة','الرياض','أبها']],['«يحمل الناس الهاتف المحمول في جيوبهم». سُمّي محمولًا لأنه:','يُحمَل بسهولة',['ثقيل','يُحمَل بسهولة','كبير']],['«في البحر أسماك كثيرة وألوان جميلة». ماذا يوجد في البحر؟','أسماك',['أسماك','أشجار','جبال']],['«أعطى خالد صديقه نصف طعامه وهو جائع». هذا السلوك يُسمّى:','الإيثار',['الإيثار','البخل','الكسل']],['«تعاون الطلاب في تنظيف الفصل». ما نتيجة التعاون غالبًا؟','إنجاز العمل بسرعة',['إنجاز العمل بسرعة','تأخر العمل','ترك العمل']],['«تدور الأقمار الصناعية حول الأرض وتنقل الصور والأخبار». ما فائدتها؟','نقل الصور والأخبار',['زراعة الأرض','نقل الصور والأخبار','صيد الأسماك']],['«كان عمر رضي الله عنه يتفقّد أحوال الناس ليلًا». متى كان يتفقّدهم؟','ليلًا',['صباحًا','ظهرًا','ليلًا']],['«يحب سعيد عمله في المزرعة ويستيقظ مبكرًا». بماذا يتّصف سعيد؟','النشاط',['النشاط','الكسل','الغضب']],['«ابن سينا عالم مسلم برع في الطب». في أي علم برع ابن سينا؟','الطب',['الطب','الفلك','الزراعة']],['«المحيط أكبر من البحر ومياهه مالحة». أيّهما أكبر؟','المحيط',['البحر','المحيط','النهر']]],
+ taa:[['اختر الكلمة المكتوبة صحيحًا:','مدرسة',['مدرسه','مدرسة','مدرست']],['اختر الكلمة المكتوبة صحيحًا:','بنات',['بناة','بنات','بناه']],['اختر الكلمة المكتوبة صحيحًا:','شجرة',['شجره','شجرت','شجرة']],['اختر الكلمة المكتوبة صحيحًا:','بيت',['بية','بيت','بيه']],['اختر الكلمة المكتوبة صحيحًا:','سيارة',['سياره','سيارت','سيارة']],['اختر الكلمة المكتوبة صحيحًا:','صوت',['صوة','صوت','صوه']],['اختر الكلمة المكتوبة صحيحًا:','معلمات',['معلماة','معلمات','معلماه']],['اختر الكلمة المكتوبة صحيحًا:','نخلة',['نخله','نخلت','نخلة']],['اختر الكلمة المكتوبة صحيحًا:','زيت',['زية','زيت','زيه']],['اختر الكلمة المكتوبة صحيحًا:','طائرة',['طائره','طائرت','طائرة']]],
+ lam:[['الشمس','شمسية'],['القمر','قمرية'],['النهر','شمسية'],['الباب','قمرية'],['الطائرة','شمسية'],['الكتاب','قمرية'],['الدرس','شمسية'],['الهاتف','قمرية'],['السماء','شمسية'],['البحر','قمرية'],['الرياض','شمسية'],['العلم','قمرية']].map(([w,t])=>[`نوع اللام في كلمة «${w}»:`,t,['شمسية','قمرية']]),
+ plural:[['ما جمع كلمة «معلّم»؟','معلّمون',['معلّمون','معلّمات','معلّمان']],['ما جمع كلمة «طالبة»؟','طالبات',['طالبون','طالبات','طالبتان']],['ما مثنى كلمة «كتاب»؟','كتابان',['كُتُب','كتابان','كتابات']],['ما مفرد كلمة «أشجار»؟','شجرة',['شجرة','شجيرات','شجران']],['ما جمع كلمة «مسجد»؟','مساجد',['مسجدات','مساجد','مسجدون']],['ما مثنى كلمة «قمر»؟','قمران',['أقمار','قمران','قمرون']],['ما جمع كلمة «بحر»؟','بحار',['بحران','بحار','بحرات']],['ما مفرد كلمة «عُلماء»؟','عالِم',['عالِم','علوم','معلّم']],['«محيطات» نوعها:','جمع مؤنث سالم',['مثنى','جمع مؤنث سالم','جمع مذكر سالم']],['«مهندسون» نوعها:','جمع مذكر سالم',['مثنى','جمع مؤنث سالم','جمع مذكر سالم']]],
+ opp:[['ما ضد كلمة «كريم»؟','بخيل',['بخيل','سخيّ','طيّب']],['ما ضد كلمة «نشيط»؟','كسول',['سريع','كسول','قويّ']],['ما ضد كلمة «صادق»؟','كاذب',['أمين','كاذب','وفيّ']],['ما مرادف كلمة «يُعين»؟','يساعد',['يساعد','يمنع','يترك']],['ما مرادف كلمة «فرِح»؟','سعيد',['حزين','سعيد','غاضب']],['ما ضد كلمة «قريب»؟','بعيد',['بعيد','جميل','واسع']],['ما مرادف كلمة «شجاع»؟','جريء',['خائف','جريء','بطيء']],['ما ضد كلمة «يبني»؟','يهدم',['يرفع','يهدم','يصنع']],['ما مرادف كلمة «العِلم»؟','المعرفة',['الجهل','المعرفة','اللعب']],['ما ضد كلمة «عميق»؟','ضحل',['واسع','ضحل','طويل']]],
+ sentence:[['«العلمُ نورٌ» جملة:','اسمية',['اسمية','فعلية']],['«يقرأُ خالدٌ القصةَ» جملة:','فعلية',['اسمية','فعلية']],['«البحرُ واسعٌ» جملة:','اسمية',['اسمية','فعلية']],['«ساعدَ عمرُ الأسرةَ» جملة:','فعلية',['اسمية','فعلية']],['«الهاتفُ مفيدٌ» جملة:','اسمية',['اسمية','فعلية']],['«تطيرُ الطائرةُ» جملة:','فعلية',['اسمية','فعلية']],['في جملة «الشمسُ مشرقةٌ» المبتدأ هو:','الشمس',['الشمس','مشرقة']],['في جملة «الجوُّ جميلٌ» الخبر هو:','جميل',['الجو','جميل']],['في جملة «نجحَ الطالبُ» الفاعل هو:','الطالب',['نجح','الطالب']],['«المؤمنون إخوةٌ» جملة:','اسمية',['اسمية','فعلية']]],
+ verb:[['ما الفعل الماضي؟','كتبَ',['كتبَ','يكتبُ','اكتبْ']],['ما فعل الأمر؟','اجتهدْ',['اجتهدَ','يجتهدُ','اجتهدْ']],['ما الفعل المضارع؟','يعملُ',['عملَ','يعملُ','اعملْ']],['الفعل «سافرَ» زمنه:','ماضٍ',['ماضٍ','مضارع','أمر']],['الفعل «ادرسْ» نوعه:','أمر',['ماضٍ','مضارع','أمر']],['الفعل «نلعبُ» نوعه:','مضارع',['ماضٍ','مضارع','أمر']],['المضارع من «زرعَ» هو:','يزرعُ',['ازرعْ','يزرعُ','زارع']],['الأمر من «يجلسُ» هو:','اجلسْ',['جلسَ','اجلسْ','جالس']],['الماضي من «يسبحُ» هو:','سبحَ',['سبحَ','اسبحْ','سبّاح']],['أيّها ليست فعلًا؟','مدرسة',['ذهبَ','مدرسة','يأكلُ']]],
+ hamza:[['اختر الكلمة المكتوبة صحيحًا:','سأل',['سئل','سأل','سؤل']],['اختر الكلمة المكتوبة صحيحًا:','بئر',['بأر','بئر','بؤر']],['اختر الكلمة المكتوبة صحيحًا:','مؤمن',['مئمن','مأمن','مؤمن']],['اختر الكلمة المكتوبة صحيحًا:','رأس',['رئس','رأس','رؤس']],['اختر الكلمة المكتوبة صحيحًا:','ذئب',['ذأب','ذئب','ذؤب']],['اختر الكلمة المكتوبة صحيحًا:','فؤاد',['فئاد','فأاد','فؤاد']],['اختر الكلمة المكتوبة صحيحًا:','فأر',['فئر','فأر','فؤر']],['اختر الكلمة المكتوبة صحيحًا:','سُئل',['سُأل','سُئل','سُؤل']],['اختر الكلمة المكتوبة صحيحًا:','لؤلؤ',['لئلئ','لألأ','لؤلؤ']],['اختر الكلمة المكتوبة صحيحًا:','مِئذنة',['مِأذنة','مِئذنة','مِؤذنة']]],
+ madd:[['كم حرف مدّ في كلمة «صاروخ»؟','٢',['١','٢','٣']],['حرف المدّ في كلمة «نور»:','الواو',['النون','الواو','الراء']],['حرف المدّ في كلمة «سفينة»:','الياء',['الياء','السين','النون']],['حرف المدّ في كلمة «عالِم»:','الألف',['الألف','العين','الميم']],['أيّ كلمة فيها مد بالواو؟','سور',['سور','سار','سير']],['أيّ كلمة فيها مد بالياء؟','كبير',['كبار','كبير','كبُر']],['أيّ كلمة فيها مد بالألف؟','ساحل',['سهل','ساحل','سحب']],['كم حرف مدّ في كلمة «محيط»؟','١',['١','٢','٣']],['حرف المد في «حوت»:','الواو',['الحاء','الواو','التاء']],['أيّ كلمة ليس فيها حرف مد؟','بَحر',['بَحر','بِحار','بُحور']]]
+};
+const lq=key=>{const f=()=>{const b=LB[key][R(0,LB[key].length-1)];return{q:b[0],a:b[1],o:shuffle(b[2]),skill:LS[key]}};f.skillKey=key;f.bank=()=>LB[key].map(b=>({q:b[0],a:b[1],o:shuffle(b[2]),skill:LS[key]}));return f};
+
+/* ================= curriculum (lesson: [name, generators, explanation(math)]) ================= */
+const C={
+ lughati:{name:'لغتي',color:'var(--teal)',soft:'var(--teal-soft)',g:'ض',1:[
+   {u:'التعامل مع الآخرين',ls:[['عادل في الطائرة',[lq('read'),lq('taa')]],['عام دراسي جديد',[lq('taa'),lq('opp')]]]},
+   {u:'ربوع من بلادي',ls:[['الرياض والملك الشجاع',[lq('read'),lq('lam')]],['مصايفنا',[lq('lam'),lq('plural')]]]},
+   {u:'أخلاق المسلم',ls:[['التعاون',[lq('opp'),lq('sentence')]],['الإيثار',[lq('read'),lq('sentence')]]]},
+   {u:'وسائل الاتصالات',ls:[['الهاتف المحمول',[lq('read'),lq('plural')]],['الأقمار الصناعية',[lq('lam'),lq('madd')]]]}],
+  2:[
+   {u:'مكارم الأخلاق',ls:[['عمر رضي الله عنه والأسرة الفقيرة',[lq('read'),lq('sentence')]],['كل درهم بعشرة',[lq('opp'),lq('verb')]]]},
+   {u:'أحب العمل',ls:[['تدريبات الوحدة',[lq('verb'),lq('hamza')]]]},
+   {u:'من علماء المسلمين',ls:[['تدريبات الوحدة',[lq('hamza'),lq('plural')]]]},
+   {u:'البحار والمحيطات',ls:[['تدريبات الوحدة',[lq('madd'),lq('read')]]]}]},
+ math:{name:'الرياضيات',color:'var(--coral)',soft:'var(--coral-soft)',g:'٧',1:[
+   {u:'القيمة المنزلية',ls:[
+    ['الجبر: الأنماط العددية',[M.pattern],'النمط العددي أعداد مرتبة وفق قاعدة. نجد القاعدة بمقارنة كل عدد بالذي قبله (نزيد أو ننقص العدد نفسه)، ثم نطبّقها لإيجاد العدد التالي.','٥، ١٠، ١٥، ٢٠ ← القاعدة: نزيد ٥، فالتالي ٢٥'],
+    ['مهارة حل المسألة: استعمال الخطوات الأربع',[M.steps4],'نحل المسألة بأربع خطوات: أفهم (ما المعطى وما المطلوب)، أخطط (أختار العملية)، أحل، أتحقق من معقولية الجواب.','٢٥ قصة و١٤ كتابًا ← أجمع: ٢٥ + ١٤ = ٣٩'],
+    ['القيمة المنزلية ضمن الألوف',[M.place,M.value],'كل رقم في العدد له منزلة: آحاد، عشرات، مئات، ألوف (من اليمين). قيمة الرقم = الرقم × قيمة منزلته.','في ٤٣٢٥: الرقم ٣ في منزلة المئات، وقيمته ٣٠٠'],
+    ['القيمة المنزلية ضمن عشرات الألوف',[M.place10k],'بعد منزلة الألوف تأتي منزلة عشرات الألوف. نقرأ العدد من اليسار ونضع فاصلة بعد الألوف لتسهيل القراءة.','٤٧٫٢٨٣: الرقم ٤ في منزلة عشرات الألوف وقيمته ٤٠٠٠٠'],
+    ['مقارنة الأعداد',[M.compare],'نقارن من أكبر منزلة (اليسار). إذا تساوت ننتقل للمنزلة التي بعدها. نستعمل > و < و =، والفتحة دائمًا نحو العدد الأكبر.','٥٢٣٠ > ٥١٩٩ لأن ٢ مئات أكبر من ١ مئة'],
+    ['ترتيب الأعداد',[M.order],'نقارن الأعداد منزلةً منزلة، ثم نكتبها تصاعديًا (من الأصغر للأكبر) أو تنازليًا (من الأكبر للأصغر).','تصاعديًا: ٢٤٥، ٣١٢، ٣٨٠'],
+    ['التقريب إلى أقرب عشرة وإلى أقرب مئة',[M.round10,M.round100],'ننظر إلى الرقم الذي على يمين المنزلة المطلوبة: إذا كان ٥ أو أكثر نقرّب للأعلى، وإذا كان أقل من ٥ نُبقي المنزلة ونضع أصفارًا.','٤٧ ← ٥٠ (أقرب عشرة). ٣٤٢ ← ٣٠٠ (أقرب مئة)'],
+    ['التقريب إلى أقرب ألف',[M.round1000],'ننظر إلى رقم المئات: إذا كان ٥ أو أكثر نزيد الألوف واحدًا، وإذا كان أقل من ٥ نُبقي الألوف، ثم نضع أصفارًا في باقي المنازل.','٤٦٢٠ ← ٥٠٠٠ ، ٣٢٨٠ ← ٣٠٠٠']]},
+   {u:'الجمع',ls:[
+    ['الجبر: خصائص الجمع',[M.addProp],'خاصية الإبدال: تغيير ترتيب العددين لا يغيّر الناتج. خاصية العنصر المحايد: جمع الصفر لا يغيّر العدد.','٧ + ٥ = ٥ + ٧ ، و ٩ + ٠ = ٩'],
+    ['تقدير نواتج الجمع',[M.addEst],'نقرّب كل عدد ثم نجمع الأعداد المقرّبة لنعرف الناتج التقريبي بسرعة.','٢١٠ + ٣٨٠ ← ٢٠٠ + ٤٠٠ = ٦٠٠ تقريبًا'],
+    ['مهارة حل المسألة: الجواب الدقيق أم التقديري',[M.exactEst,M.addEst],'نحتاج الجواب الدقيق عندما يجب أن يكون الرقم صحيحًا تمامًا (مثل دفع ثمن). ويكفي التقدير عندما يُسأل عن «تقريبًا» أو «حوالي».','كم طالبًا في المدرسة تقريبًا؟ ← يكفي التقدير'],
+    ['جمع الأعداد المكونة من رقمين',[M.add2],'نجمع الآحاد أولًا، فإذا زاد المجموع على ٩ نُعيد التجميع وننقل عشرة إلى منزلة العشرات، ثم نجمع العشرات.','٤٧ + ٣٨: ٧+٨=١٥ نكتب ٥ وننقل ١، ثم ٤+٣+١=٨ ← ٨٥'],
+    ['مهارة حل المسألة: استعمال الخطوات الأربع',[M.steps4],'أفهم المسألة، ثم أخطط باختيار العملية، ثم أحل، ثم أتحقق من الجواب.','جمع خالد ١٢٠ طابعًا وأُهدي ٣٥ ← ١٢٠ + ٣٥ = ١٥٥'],
+    ['جمع الأعداد المكونة من ثلاثة أرقام',[M.add3],'نرتب الأعداد عموديًا حسب المنازل ونجمع الآحاد ثم العشرات ثم المئات، مع إعادة التجميع عند الحاجة.','٢٥٦ + ٣٧٨ = ٦٣٤']]},
+   {u:'الطرح',ls:[
+    ['طرح الأعداد المكونة من رقمين',[M.sub2],'نطرح الآحاد ثم العشرات. إذا كان رقم الآحاد في الأعلى أصغر، نأخذ عشرة من العشرات.','٥٢ − ٢٧ = ٢٥'],
+    ['تقدير نواتج الطرح',[M.subEst],'نقرّب كل عدد إلى أقرب مئة (أو عشرة) ثم نطرح الأعداد المقرّبة.','٦٨٠ − ٢٩٠ ← ٧٠٠ − ٣٠٠ = ٤٠٠ تقريبًا'],
+    ['مهارة حل المسألة: معقولية الجواب',[M.reasonable],'بعد الحل نقدّر الناتج لنتأكد أن الجواب قريب منه. إذا كان بعيدًا جدًا فهناك خطأ نراجعه.','٥١٢ − ٢٩٨ ≈ ٥٠٠ − ٣٠٠ = ٢٠٠، فالجواب ٢١٤ معقول'],
+    ['طرح الأعداد المكونة من ٣ أرقام مع إعادة التجميع',[M.sub3],'عندما لا نستطيع طرح منزلة، نستلف من المنزلة التي على يسارها: عشرة = ١٠ آحاد، ومئة = ١٠ عشرات.','٤٣٢ − ١٥٨ = ٢٧٤'],
+    ['الطرح مع وجود الأصفار',[M.subZero],'إذا كان في العدد أصفار، نستلف من أول منزلة غير صفرية ونمرّر الاستلاف عبر الأصفار.','٥٠٠ − ١٢٣ = ٣٧٧'],
+    ['تحديد العملية المناسبة',[M.chooseOp,M.subWord],'كلمات مثل «المجموع» و«صار» تدل على الجمع، و«بقي» و«الفرق» و«كم يزيد» تدل على الطرح، و«في كل» مع مجموعات متساوية تدل على الضرب.','طار ٣ بالونات من ٨، كم بقي؟ ← الطرح']]},
+   {u:'الضرب (١)',ls:[
+    ['الشبكات وعملية الضرب',[M.arrays,M.mulMean],'الشبكة ترتيب للأشياء في صفوف وأعمدة متساوية. عدد الأشياء = عدد الصفوف × عدد ما في كل صف.','٣ صفوف في كل صف ٤ ← ٣ × ٤ = ١٢'],
+    ['الضرب في ٢',[M.mulBy(2)],'الضرب في ٢ هو مضاعفة العدد، أي جمعه مع نفسه.','٢ × ٧ = ٧ + ٧ = ١٤'],
+    ['الضرب في ٤',[M.mulBy(4)],'الضرب في ٤ هو مضاعفة العدد مرتين: نضربه في ٢ ثم نضاعف الناتج.','٤ × ٦: ضعف ٦ = ١٢، وضعف ١٢ = ٢٤'],
+    ['مهارة حل المسألة: تحديد المعطيات الزائدة أو الناقصة',[M.extraInfo],'نقرأ المسألة ونحدد المعلومات التي نحتاجها للحل، ونتجاهل المعلومة التي لا علاقة لها بالسؤال.','عمر خالد لا نحتاجه لحساب ثمن القلم'],
+    ['الضرب في ٥',[M.mulBy(5)],'نواتج الضرب في ٥ تنتهي دائمًا بـ ٠ أو ٥، ويمكن العدّ القفزي بالخمسات.','٥ × ٧ = ٣٥'],
+    ['الضرب في ١٠',[M.mulBy(10)],'عند ضرب عدد في ١٠ نضع صفرًا على يمين العدد.','١٠ × ٨ = ٨٠'],
+    ['استقصاء حل المسألة',[M.investigate],'نختار خطة مناسبة للحل: رسم صورة، أو عمل جدول، أو استعمال حقائق الضرب، ثم نتحقق من الجواب.','٦ أبقار لكل بقرة ٤ أرجل ← ٦ × ٤ = ٢٤'],
+    ['الضرب في الصفر وفي الواحد',[M.mul01],'أي عدد × ٠ = ٠. أي عدد × ١ = العدد نفسه.','٩ × ٠ = ٠ ، ٩ × ١ = ٩']]},
+   {u:'الضرب (٢)',ls:[
+    ['الضرب في ٣',[M.mulBy(3)],'الضرب في ٣ = ضعف العدد مضافًا إليه العدد مرة ثالثة.','٣ × ٦ = ١٢ + ٦ = ١٨'],
+    ['الضرب في ٦',[M.mulBy(6)],'الضرب في ٦ ضعف الضرب في ٣.','٣ × ٧ = ٢١ ← ٦ × ٧ = ٤٢'],
+    ['خطة حل المسألة: البحث عن نمط',[M.patternMul,M.pattern],'نبحث عن قاعدة تتكرر في الأعداد أو الأشكال، ثم نستعملها لنكمل النمط.','٤، ٨، ١٢، ١٦ ← نزيد ٤، فالتالي ٢٠'],
+    ['الضرب في ٧',[M.mulBy(7)],'نستعمل حقائق نعرفها: ٧ × العدد = (٥ × العدد) + (٢ × العدد).','٧ × ٦ = ٣٠ + ١٢ = ٤٢'],
+    ['الضرب في ٨',[M.mulBy(8)],'الضرب في ٨ ضعف الضرب في ٤.','٤ × ٧ = ٢٨ ← ٨ × ٧ = ٥٦'],
+    ['الضرب في ٩',[M.mulBy(9)],'حيلة التسعة: ٩ × العدد = (١٠ × العدد) − العدد.','٩ × ٦ = ٦٠ − ٦ = ٥٤'],
+    ['الجبر: الخاصية التجميعية',[M.mulAssoc,M.mulComm],'تغيير طريقة تجميع ثلاثة عوامل لا يغيّر الناتج، فنبدأ بالعاملين الأسهل.','(٢ × ٣) × ٤ = ٢ × (٣ × ٤) = ٢٤']]}],
+  2:[
+   {u:'القسمة (١)',ls:[
+    ['علاقة القسمة بالطرح',[M.divSub],'القسمة طرح متكرر: نطرح المقسوم عليه مرة بعد مرة حتى نصل إلى الصفر، وعدد المرات هو ناتج القسمة.','١٢ − ٤ − ٤ − ٤ = ٠ ← ١٢ ÷ ٤ = ٣'],
+    ['علاقة القسمة بالضرب',[M.divMul],'القسمة عكس الضرب. لحل ٢٤ ÷ ٦ نسأل: ٦ × كم = ٢٤؟','٦ × ٤ = ٢٤ ← ٢٤ ÷ ٦ = ٤'],
+    ['القسمة على ٢ و٥ و١٠',[M.divBy(2),M.divBy(5),M.divBy(10)],'القسمة على ٢ تعني إيجاد النصف. القسمة على ١٠ نحذف الصفر من آخر العدد.','٧٠ ÷ ١٠ = ٧ ، ١٨ ÷ ٢ = ٩'],
+    ['القسمة مع الصفر وعلى الواحد',[M.div01],'العدد ÷ ١ = العدد نفسه. العدد ÷ نفسه = ١. الصفر ÷ أي عدد = ٠. ولا يمكن القسمة على الصفر.','٨ ÷ ١ = ٨ ، ٨ ÷ ٨ = ١ ، ٠ ÷ ٨ = ٠']]},
+   {u:'القسمة (٢)',ls:[
+    ['القسمة على ٣ وعلى ٤',[M.divBy(3),M.divBy(4)],'استعمل حقائق الضرب في ٣ و٤ لإيجاد ناتج القسمة.','٢٧ ÷ ٣ = ٩ لأن ٣ × ٩ = ٢٧'],
+    ['القسمة على ٦ وعلى ٧',[M.divBy(6),M.divBy(7)],'فكّر في حقيقة الضرب المرتبطة: ما العدد الذي إذا ضربته في ٦ أو ٧ أعطاك المقسوم؟','٤٢ ÷ ٧ = ٦ لأن ٧ × ٦ = ٤٢'],
+    ['القسمة على ٨ وعلى ٩',[M.divBy(8),M.divBy(9)],'القسمة على ٨ تساوي أخذ النصف ثلاث مرات. وللتسعة استعمل جدول ضرب ٩.','٥٦ ÷ ٨ = ٧']]},
+   {u:'القياس',ls:[
+    ['الطول',[M.len],'نقيس الأطوال القصيرة بالسنتمتر والطويلة بالمتر. المتر الواحد = ١٠٠ سنتمتر.','٣ م = ٣٠٠ سم'],
+    ['الكتلة والسعة',[M.mass,M.cap],'الكتلة نقيسها بالجرام والكيلوجرام (١ كجم = ١٠٠٠ جم). السعة نقيسها بالمليلتر واللتر (١ لتر = ١٠٠٠ مل).','٢ كجم = ٢٠٠٠ جم'],
+    ['الزمن',[M.time],'الساعة = ٦٠ دقيقة، واليوم = ٢٤ ساعة، والأسبوع = ٧ أيام.','٣ ساعات = ١٨٠ دقيقة']]},
+   {u:'الأشكال الهندسية',ls:[
+    ['الأشكال الثنائية الأبعاد',[M.shapes],'المضلع شكل مغلق أضلاعه قطع مستقيمة. نسمّيه حسب عدد أضلاعه: مثلث (٣)، رباعي (٤)، خماسي (٥)، سداسي (٦).','المربع رباعي أضلاعه الأربعة متساوية.'],
+    ['المجسمات',[M.solids],'المجسم شكل له طول وعرض وارتفاع. له أوجه وأحرف ورؤوس.','المكعب: ٦ أوجه، ١٢ حرفًا، ٨ رؤوس.'],
+    ['المحيط والمساحة',[M.perim,M.area],'المحيط = مجموع أطوال الأضلاع. مساحة المستطيل = الطول × العرض بالوحدات المربعة.','مستطيل ٥ × ٣: المحيط ١٦، المساحة ١٥']]},
+   {u:'الكسور',ls:[
+    ['الكسور كأجزاء من الكل',[M.frac],'الكسر يمثل جزءًا من كل مقسوم إلى أجزاء متساوية. المقام (تحت) = عدد الأجزاء كلها، والبسط (فوق) = الأجزاء المأخوذة.','فطيرة من ٤ أجزاء أُكل ١ ← ١/٤'],
+    ['الكسور كأجزاء من مجموعة',[M.fracSet],'المقام = عدد عناصر المجموعة كلها، والبسط = عدد العناصر المطلوبة.','٥ كرات منها ٢ حمراء ← ٢/٥'],
+    ['الكسور المتكافئة',[M.fracEq],'الكسور المتكافئة تمثل الجزء نفسه. نحصل عليها بضرب البسط والمقام في العدد نفسه.','١/٢ = ٢/٤ = ٣/٦'],
+    ['مقارنة الكسور وترتيبها',[M.fracCmp],'إذا تساوت المقامات، فالكسر الأكبر هو صاحب البسط الأكبر.','٣/٥ > ٢/٥']]}]}
+};
+const termName=t=>t==='1'?'الفصل الدراسي الأول':'الفصل الدراسي الثاني';
+const unitNo=(s,t,ui)=>ui+1+(t==='2'?(s==='math'?5:4):0);
+const unitLabel=(s,t,ui)=>(s==='math'?'الفصل ':'الوحدة ')+ar(unitNo(s,t,ui));
+function lessonOf(s,t,ui,li){return C[s][t][ui].ls[li]}
+function genQ(s,t,ui,li){const l=lessonOf(s,t,ui,li);const g=l[1][R(0,l[1].length-1)];const q=g();q.skill=q.skill||(s==='math'?l[0]:'');return q}
+function genSet(s,t,ui,li,n){const l=lessonOf(s,t,ui,li);let out=[],seen=new Set();
+  if(s==='lughati'){l[1].forEach(f=>f.bank().forEach(q=>{if(!seen.has(q.q+q.a)){seen.add(q.q+q.a);out.push(q)}}));return shuffle(out).slice(0,n)}
+  let g=0;while(out.length<n&&g++<400){const q=genQ(s,t,ui,li);if(!seen.has(q.q)){seen.add(q.q);out.push(q)}}return out}
+function skillsOf(s,t){const set=new Set([s==='math'?'قراءة المسائل الرياضية':'الفهم القرائي']);C[s][t].forEach(u=>u.ls.forEach(l=>{if(s==='math')set.add(l[0]);else l[1].forEach(f=>set.add(LS[f.skillKey]))}));return [...set]}
+
+/* ================= reading comprehension passages (original texts) ================= */
+const READ={
+ /* ---- لغتي: نص لكل درس ---- */
+ 'عادل في الطائرة':{t:'رحلة عادل الأولى',p:'ركب عادل الطائرة أول مرة مع أبيه، وكانت الرحلة من الرياض إلى أبها. جلس عادل بجانب النافذة، ورأى البيوت تصغر شيئًا فشيئًا حتى صارت كالنقاط. ابتسمت المضيفة وقدّمت له كوبًا من العصير، فشكرها بأدب. ولمّا اهتزت الطائرة قليلًا خاف عادل، فأمسك أبوه يده وقال: لا تخف يا بني، هذا شيء طبيعي. وبعد ساعة ونصف هبطت الطائرة بسلام، فحمد عادل الله على سلامة الوصول.',
+  q:[['من أين بدأت رحلة عادل؟','الرياض',['الرياض','أبها','جدة']],['أين جلس عادل في الطائرة؟','بجانب النافذة',['بجانب النافذة','في آخر الطائرة','بجانب الباب']],['ماذا فعل عادل عندما قدّمت له المضيفة العصير؟','شكرها بأدب',['شكرها بأدب','رفض العصير','لم يتكلم']],['كم استغرقت الرحلة؟','ساعة ونصف',['نصف ساعة','ساعة ونصف','ثلاث ساعات']]]},
+ 'عام دراسي جديد':{t:'اليوم الأول',p:'استيقظت ريم مبكرة في أول يوم من العام الدراسي الجديد. لبست زيّها المدرسي، وحملت حقيبتها التي رتّبتها في الليلة السابقة. وفي المدرسة رحّبت بها المعلمة، وعرّفتها على زميلة جديدة اسمها هيا. شعرت هيا بالخجل لأنها لا تعرف أحدًا، فجلست ريم بجانبها وشاركتها ألوانها. وفي نهاية اليوم قالت هيا: شكرًا يا ريم، لقد جعلتِ يومي جميلًا.',
+  q:[['متى رتّبت ريم حقيبتها؟','في الليلة السابقة',['في الصباح','في الليلة السابقة','في المدرسة']],['لماذا شعرت هيا بالخجل؟','لأنها لا تعرف أحدًا',['لأنها تأخرت','لأنها لا تعرف أحدًا','لأنها نسيت حقيبتها']],['ماذا شاركت ريم مع هيا؟','ألوانها',['طعامها','ألوانها','كتبها']],['ما الصفة التي ظهرت في تصرّف ريم؟','حسن التعامل مع الآخرين',['حسن التعامل مع الآخرين','الكسل','الأنانية']]]},
+ 'الرياض والملك الشجاع':{t:'الرياض عاصمتنا',p:'الرياض عاصمة المملكة العربية السعودية، وهي من أكبر مدن المملكة. استعادها الملك عبدالعزيز رحمه الله بشجاعة وحكمة، ثم بدأ منها توحيد البلاد. واليوم أصبحت الرياض مدينة حديثة فيها الشوارع الواسعة والأبراج العالية والحدائق الجميلة. ويزورها الناس من داخل المملكة وخارجها، ويحبون زيارة متاحفها التي تحكي تاريخ الوطن.',
+  q:[['ما عاصمة المملكة العربية السعودية؟','الرياض',['الرياض','مكة المكرمة','الدمام']],['من الذي استعاد الرياض؟','الملك عبدالعزيز',['الملك عبدالعزيز','أحد التجار','أحد الرحالة']],['بماذا وصف النص الملك عبدالعزيز؟','بالشجاعة والحكمة',['بالشجاعة والحكمة','بالسرعة','بالغضب']],['ماذا تحكي متاحف الرياض؟','تاريخ الوطن',['قصص الحيوانات','تاريخ الوطن','أخبار الرياضة']]]},
+ 'مصايفنا':{t:'إجازة في الجنوب',p:'في الصيف يشتد الحرّ في كثير من المدن، فتسافر أسرة فهد إلى أبها حيث الجو معتدل والجبال خضراء. يحب فهد ركوب العربات المعلّقة ومشاهدة الضباب وهو يغطي قمم الجبال. وفي المساء تجلس الأسرة في المنتزه وتتناول العشاء معًا. ويقول فهد: مصايف بلادي جميلة، ولا أحتاج أن أسافر بعيدًا لأستمتع بالإجازة.',
+  q:[['لماذا تسافر أسرة فهد في الصيف؟','لأن الحر يشتد',['لأن الحر يشتد','لزيارة المدرسة','لشراء الملابس']],['كيف وصف النص جو أبها؟','معتدل',['حار جدًا','معتدل','ممطر طوال اليوم']],['ماذا يحب فهد أن يشاهد؟','الضباب على قمم الجبال',['الضباب على قمم الجبال','البحر','الصحراء']],['ما الفكرة الرئيسة في النص؟','جمال المصايف في بلادنا',['جمال المصايف في بلادنا','صعوبة السفر','حب الطعام']]]},
+ 'التعاون':{t:'حديقة المدرسة',p:'قررت المعلمة أن يزرع الطلاب حديقة صغيرة في ساحة المدرسة. حفر سعد التراب، ووضع ناصر البذور، وسقاها يوسف بالماء، وكتب خالد لوحة جميلة باسم الحديقة. وبعد أسابيع نبتت الأزهار، وفرح الجميع بها. قالت المعلمة: لو عمل كل واحد منكم وحده لتعب كثيرًا، لكنكم تعاونتم فأنجزتم العمل بسرعة وإتقان.',
+  q:[['من الذي وضع البذور؟','ناصر',['سعد','ناصر','يوسف']],['ماذا فعل يوسف؟','سقى البذور',['حفر التراب','كتب اللوحة','سقى البذور']],['ما نتيجة تعاون الطلاب؟','أنجزوا العمل بسرعة وإتقان',['تعبوا كثيرًا','أنجزوا العمل بسرعة وإتقان','لم تنبت الأزهار']],['ما القيمة التي يدعو إليها النص؟','التعاون',['التعاون','المنافسة','الراحة']]]},
+ 'الإيثار':{t:'نصف الشطيرة',p:'في وقت الفسحة فتح سلمان علبة طعامه، فرأى زميله مازن جالسًا وحده لم يحضر طعامًا. كان سلمان جائعًا، لكنه قسم شطيرته نصفين وأعطى مازن النصف الأكبر. شكره مازن وقال: لكنك جائع! فأجاب سلمان: يكفيني ما بقي، وأنا سعيد لأنك أكلت. وعندما علمت المعلمة بما حدث أثنت على سلمان أمام الفصل.',
+  q:[['متى حدثت القصة؟','وقت الفسحة',['وقت الفسحة','بعد المدرسة','في حصة الرياضيات']],['أيّ نصف أعطى سلمان لمازن؟','النصف الأكبر',['النصف الأصغر','النصف الأكبر','الشطيرة كلها']],['كيف شعر سلمان بعد أن أعطى مازن؟','سعيد',['حزين','غاضب','سعيد']],['ما معنى الإيثار كما يظهر في القصة؟','أن تقدّم غيرك على نفسك',['أن تقدّم غيرك على نفسك','أن تأكل وحدك','أن تطلب من غيرك']]]},
+ 'الهاتف المحمول':{t:'صديق في الجيب',p:'الهاتف المحمول جهاز صغير يحمله الناس معهم أينما ذهبوا. نتصل به على أهلنا وأصدقائنا، ونرسل الرسائل، ونلتقط الصور، ونبحث عن المعلومات. لكن للهاتف آداب، منها: ألّا نرفع الصوت في الأماكن العامة، وألّا نستعمله أثناء الطعام مع الأسرة. كما أن الاستعمال الطويل يتعب العينين، لذلك يجب أن نستعمله باعتدال.',
+  q:[['لماذا سُمّي الهاتف محمولًا؟','لأن الناس يحملونه معهم',['لأنه كبير','لأن الناس يحملونه معهم','لأنه ثقيل']],['أيّ مما يلي من آداب استعمال الهاتف؟','عدم رفع الصوت في الأماكن العامة',['عدم رفع الصوت في الأماكن العامة','استعماله أثناء الطعام','استعماله طوال اليوم']],['ما ضرر الاستعمال الطويل للهاتف؟','يتعب العينين',['يقوّي النظر','يتعب العينين','لا ضرر له']],['كيف ينصحنا النص أن نستعمل الهاتف؟','باعتدال',['باعتدال','بكثرة','لا نستعمله أبدًا']]]},
+ 'الأقمار الصناعية':{t:'عيون في السماء',p:'الأقمار الصناعية أجهزة يصنعها الإنسان ويرسلها بالصواريخ إلى الفضاء، فتدور حول الأرض. بعضها ينقل البث التلفزيوني والاتصالات، وبعضها يصوّر السحب ليعرف العلماء حالة الطقس، وبعضها يساعد الناس على معرفة الطرق والأماكن. ولولا الأقمار الصناعية ما استطعنا أن نشاهد حدثًا يقع في بلد بعيد في اللحظة نفسها.',
+  q:[['كيف تصل الأقمار الصناعية إلى الفضاء؟','بالصواريخ',['بالطائرات','بالصواريخ','بالسفن']],['حول ماذا تدور الأقمار الصناعية؟','الأرض',['الشمس','القمر','الأرض']],['كيف تساعد الأقمار الصناعية في معرفة الطقس؟','تصوّر السحب',['تصوّر السحب','تصنع المطر','تنقل الرياح']],['من الذي يصنع الأقمار الصناعية؟','الإنسان',['الإنسان','الطبيعة','الحيوانات']]]},
+ 'عمر رضي الله عنه والأسرة الفقيرة':{t:'الخليفة العادل',p:'كان أمير المؤمنين عمر بن الخطاب رضي الله عنه يتفقّد أحوال الناس في الليل. وفي إحدى الليالي سمع بكاء أطفال جائعين في بيت صغير، ورأى أمهم تضع قدرًا فيه ماء على النار لتلهيهم حتى يناموا. فأسرع عمر إلى مخزن الطعام، وحمل الدقيق على ظهره بنفسه، ثم طبخ لهم حتى شبعوا وضحكوا. ولم يرجع حتى اطمأن عليهم.',
+  q:[['متى كان عمر رضي الله عنه يتفقّد الناس؟','في الليل',['في الصباح','في الليل','وقت الظهر']],['لماذا كان الأطفال يبكون؟','لأنهم جائعون',['لأنهم مرضى','لأنهم جائعون','لأنهم خائفون']],['من حمل الدقيق؟','عمر بنفسه',['أحد الخدم','عمر بنفسه','الأم']],['ما الصفة التي يدل عليها فعل عمر؟','الرحمة وتحمّل المسؤولية',['الرحمة وتحمّل المسؤولية','البخل','الكسل']]]},
+ 'كل درهم بعشرة':{t:'حصالة جود',p:'كانت جود تضع في حصالتها ريالًا كل يوم. وفي نهاية الشهر فتحت الحصالة فوجدت فيها ثلاثين ريالًا. فكرت جود: هل أشتري لعبة جديدة؟ ثم تذكرت أن جارتهم العجوز مريضة وتحتاج إلى دواء. ذهبت جود مع أمها واشترتا الدواء بجزء من المال، وأبقت الباقي في الحصالة. وقالت أمها: الصدقة لا تُنقص المال، بل يبارك الله فيه ويضاعف الأجر.',
+  q:[['كم ريالًا كانت جود تضع في الحصالة كل يوم؟','ريالًا واحدًا',['ريالًا واحدًا','عشرة ريالات','ثلاثين ريالًا']],['كم وجدت جود في الحصالة؟','ثلاثين ريالًا',['عشرة ريالات','ثلاثين ريالًا','مئة ريال']],['ماذا اشترت جود بجزء من مالها؟','دواء للجارة',['لعبة جديدة','دواء للجارة','حلوى']],['ماذا تعلّمنا من قول الأم؟','الصدقة يبارك الله بها المال',['الصدقة تُنقص المال','الصدقة يبارك الله بها المال','لا نحتاج الادخار']]]},
+ 'أحب العمل':{t:'المخبز الصغير',p:'يعمل العم صالح في مخبز صغير قرب المسجد. يستيقظ قبل الفجر، فيعجن العجين ويُشعل الفرن، وعندما يخرج الناس من صلاة الفجر يجدون الخبز ساخنًا. يقول العم صالح: العمل يحفظ كرامة الإنسان، ويجعله نافعًا لنفسه ولغيره. وقد علّم ابنه أن يتقن عمله، وأن يكون صادقًا في البيع والشراء.',
+  q:[['أين يقع مخبز العم صالح؟','قرب المسجد',['قرب المسجد','في السوق الكبير','بجوار المدرسة']],['متى يستيقظ العم صالح؟','قبل الفجر',['قبل الفجر','وقت الظهر','بعد العصر']],['ماذا يحفظ العمل للإنسان كما قال العم صالح؟','كرامته',['ماله فقط','كرامته','وقته']],['بماذا نصح العم صالح ابنه؟','أن يتقن عمله ويصدق',['أن يتقن عمله ويصدق','أن يترك العمل','أن يعمل بسرعة فقط']]]},
+ 'من علماء المسلمين':{t:'الخوارزمي',p:'الخوارزمي عالم مسلم عاش في بغداد قبل أكثر من ألف عام. أحب الرياضيات منذ صغره، وألّف كتبًا مهمة فيها، ومن علمه نشأ علم الجبر الذي يدرسه الطلاب في العالم كله. وكان يقضي وقتًا طويلًا في القراءة والتفكير، ويقول إن العلم يحتاج إلى صبر. وما زال الناس يذكرون اسمه حتى اليوم تقديرًا لعلمه.',
+  q:[['في أي مدينة عاش الخوارزمي؟','بغداد',['دمشق','بغداد','القاهرة']],['أيّ علم ارتبط باسم الخوارزمي؟','الجبر',['الطب','الجبر','الزراعة']],['ماذا يحتاج العلم كما يرى الخوارزمي؟','الصبر',['الصبر','السرعة','المال']],['لماذا ما زال الناس يذكرون اسمه؟','تقديرًا لعلمه',['تقديرًا لعلمه','لأنه كان غنيًا','لأنه كان مسافرًا']]]},
+ 'البحار والمحيطات':{t:'العالم الأزرق',p:'تغطي البحار والمحيطات معظم سطح الأرض، ولذلك تبدو الأرض زرقاء من الفضاء. والمحيط أكبر وأعمق من البحر، ومياههما مالحة. تعيش فيها مخلوقات كثيرة، منها الأسماك الملونة والحيتان الضخمة والشعاب المرجانية الجميلة. ونستفيد من البحار في الصيد والسفر ونقل البضائع، لذلك يجب أن نحافظ عليها نظيفة.',
+  q:[['لماذا تبدو الأرض زرقاء من الفضاء؟','لأن البحار والمحيطات تغطي معظمها',['لأن السماء زرقاء','لأن البحار والمحيطات تغطي معظمها','لأن الجبال زرقاء']],['أيّهما أكبر وأعمق؟','المحيط',['البحر','المحيط','النهر']],['ما طعم مياه البحار والمحيطات؟','مالحة',['عذبة','مالحة','حلوة']],['أيّ مما يلي من فوائد البحار؟','نقل البضائع',['نقل البضائع','زراعة القمح','بناء البيوت']]]},
+ /* ---- الرياضيات: نص لكل فصل ---- */
+ 'القيمة المنزلية':{t:'زوار المتحف',p:'زار المتحف الوطني في يوم السبت ٤٢٣٥ زائرًا، وفي يوم الأحد ٣٨٩٠ زائرًا، وفي يوم الاثنين ٤٥٠٢ زائرًا. وأرادت إدارة المتحف أن تعرف أيّ الأيام كان الأكثر زوارًا، وأن تكتب عدد الزوار مقرّبًا في تقريرها.',
+  q:[['في أيّ يوم كان عدد الزوار أكبر؟','الاثنين',['السبت','الأحد','الاثنين']],['ما قيمة الرقم ٢ في عدد زوار السبت (٤٢٣٥)؟','٢٠٠',['٢','٢٠','٢٠٠']],['قرّب عدد زوار الأحد (٣٨٩٠) إلى أقرب ألف:','٤٠٠٠',['٣٠٠٠','٣٩٠٠','٤٠٠٠']],['رتّب الأيام من الأقل زوارًا إلى الأكثر:','الأحد، السبت، الاثنين',['الأحد، السبت، الاثنين','السبت، الأحد، الاثنين','الاثنين، السبت، الأحد']]]},
+ 'الجمع':{t:'سوق الكتب',p:'أقامت المدرسة سوقًا للكتب. باع الصف الثالث في اليوم الأول ٢٤٦ كتابًا، وفي اليوم الثاني ١٨٧ كتابًا. وكان ثمن القصة الواحدة ٥ ريالات، وثمن المجلة ٣ ريالات.',
+  q:[['كم كتابًا باع الصف في اليومين؟','٤٣٣',['٣٢٣','٤٣٣','٤٢٣']],['قدّر مجموع الكتب بالتقريب إلى أقرب مئة:','٤٠٠',['٣٠٠','٤٠٠','٥٠٠']],['ما ثمن قصة ومجلة معًا؟','٨ ريالات',['٨ ريالات','٢ ريالان','١٥ ريالًا']],['أيّ معلومة لا نحتاجها لحساب عدد الكتب المبيعة؟','ثمن المجلة',['مبيعات اليوم الأول','مبيعات اليوم الثاني','ثمن المجلة']]]},
+ 'الطرح':{t:'رحلة الحافلة',p:'انطلقت حافلة الرحلة المدرسية وفيها ٥٠ مقعدًا، ركب فيها ٣٨ طالبًا. وكانت المسافة إلى الحديقة ٢٠٠ كيلومتر، توقفت الحافلة بعد ١٢٤ كيلومترًا للاستراحة.',
+  q:[['كم مقعدًا بقي فارغًا في الحافلة؟','١٢',['١٢','٨٨','٢٢']],['كم كيلومترًا بقي بعد الاستراحة؟','٧٦',['٨٦','٧٦','١٢٤']],['ما العملية التي نستعملها لإيجاد المسافة المتبقية؟','الطرح',['الجمع','الطرح','الضرب']],['أيّ جواب معقول للمسافة المتبقية تقريبًا؟','حوالي ٨٠',['حوالي ٨٠','حوالي ٣٠٠','حوالي ١٠']]]},
+ 'الضرب (١)':{t:'معرض الرسم',p:'علّقت المعلمة رسومات الطلاب على الجدار في ٤ صفوف، في كل صف ٥ رسومات. ووزّعت على كل طالب علبتي ألوان، وكان في الفصل ١٠ طلاب.',
+  q:[['كم رسمة علّقت المعلمة؟','٢٠',['٩','٢٠','٢٥']],['كم علبة ألوان وزّعت المعلمة؟','٢٠',['١٢','٢٠','١٠']],['ما الجملة التي تمثّل عدد الرسومات؟','٤ × ٥',['٤ + ٥','٤ × ٥','٥ − ٤']],['لو كان في كل صف ٠ رسومات، فكم رسمة على الجدار؟','٠',['٠','٤','٥']]]},
+ 'الضرب (٢)':{t:'مزرعة جدي',p:'في مزرعة جدي ٦ أقفاص للدجاج، في كل قفص ٧ دجاجات. وتضع كل دجاجة بيضة واحدة كل يوم. ويبيع جدي البيض في علب، في كل علبة ٩ بيضات.',
+  q:[['كم دجاجة في المزرعة؟','٤٢',['١٣','٤٢','٣٦']],['كم بيضة تجمع المزرعة في اليوم؟','٤٢',['٧','٤٢','٦']],['كم بيضة في ٣ علب؟','٢٧',['١٢','٢٧','٣٩']],['ما العدد التالي في النمط: ٩، ١٨، ٢٧، ؟','٣٦',['٢٨','٣٦','٤٥']]]},
+ 'القسمة (١)':{t:'توزيع الأقلام',p:'اشترت المعلمة ٢٠ قلمًا لتوزّعها بالتساوي على ٥ طلاب. وأحضر خالد ١٠ كراسات ليوزعها على صديقين بالتساوي.',
+  q:[['كم قلمًا يأخذ كل طالب؟','٤',['٤','٥','١٥']],['كم كراسة يأخذ كل صديق من خالد؟','٥',['٢','٥','٨']],['ما جملة الضرب المرتبطة بتوزيع الأقلام؟','٥ × ٤ = ٢٠',['٥ × ٤ = ٢٠','٥ + ٤ = ٩','٢٠ − ٥ = ١٥']],['لو وزّعت المعلمة ٠ أقلام على ٥ طلاب، فكم يأخذ كل طالب؟','٠',['٠','١','٥']]]},
+ 'القسمة (٢)':{t:'فريق الكشافة',p:'في مخيم الكشافة ٣٦ طالبًا، قسّمهم القائد إلى مجموعات في كل مجموعة ٦ طلاب. ثم وزّع عليهم ٢٨ خيمة صغيرة على ٧ مناطق بالتساوي.',
+  q:[['كم مجموعة كوّن القائد؟','٦',['٥','٦','٧']],['كم خيمة في كل منطقة؟','٤',['٤','٥','٧']],['ما العملية المناسبة لإيجاد عدد المجموعات؟','القسمة',['الجمع','القسمة','الضرب']],['لو كانت المجموعات من ٩ طلاب، فكم مجموعة تكون؟','٤',['٣','٤','٦']]]},
+ 'القياس':{t:'يوم الرياضة',p:'في يوم الرياضة ركض سعد مسافة ٣ أمتار في التمرين الأول، وشرب قارورة ماء سعتها لتر واحد. وبدأ السباق الساعة ٨ صباحًا واستمر ساعتين. ووزن الكرة التي لعبوا بها نصف كيلوجرام تقريبًا.',
+  q:[['كم سنتمترًا ركض سعد في التمرين الأول؟','٣٠٠',['٣٠','٣٠٠','٣٠٠٠']],['كم مليلترًا في قارورة سعد؟','١٠٠٠',['١٠٠','١٠٠٠','١٠']],['متى انتهى السباق؟','الساعة ١٠',['الساعة ٩','الساعة ١٠','الساعة ١٢']],['بأي وحدة نقيس كتلة الكرة؟','الجرام والكيلوجرام',['المتر','اللتر','الجرام والكيلوجرام']]]},
+ 'الأشكال الهندسية':{t:'حديقة الأشكال',p:'صمّم المهندس حديقة على شكل مستطيل طوله ٨ أمتار وعرضه ٥ أمتار، ووضع في وسطها نافورة على شكل دائرة، وبنى بجانبها مقعدًا على شكل مكعب.',
+  q:[['ما محيط الحديقة؟','٢٦ مترًا',['١٣ مترًا','٢٦ مترًا','٤٠ مترًا']],['ما مساحة الحديقة؟','٤٠ مترًا مربعًا',['١٣ مترًا مربعًا','٢٦ مترًا مربعًا','٤٠ مترًا مربعًا']],['كم وجهًا للمقعد المكعب؟','٦',['٤','٦','٨']],['كم ضلعًا للحديقة المستطيلة؟','٤',['٣','٤','٥']]]},
+ 'الكسور':{t:'فطيرة العائلة',p:'خبزت أم نورة فطيرة وقسمتها إلى ٨ قطع متساوية. أكلت الأسرة ٣ قطع في الغداء، وأخذت نورة قطعتين لصديقتيها. وفي الطبق أيضًا ٦ تمرات، منها ٢ من نوع السكري.',
+  q:[['ما الكسر الذي يمثّل ما أكلته الأسرة في الغداء؟','٣/٨',['٣/٨','٥/٨','٣/٥']],['ما الكسر الذي يمثّل التمر السكري من التمرات كلها؟','٢/٦',['٢/٦','٤/٦','٢/٨']],['أيّهما أكبر: ٣/٨ أم ٢/٨؟','٣/٨',['٣/٨','٢/٨']],['أيّ كسر يكافئ ١/٢؟','٤/٨',['٤/٨','٣/٨','١/٨']]]}
+};
+const readKey=(s,t,ui,li)=>{const U=C[s][t][ui],L=U.ls[li];return s==='math'?U.u:(L[0]==='تدريبات الوحدة'?U.u:L[0])};
+function toolRead(){
+  const s=sel.subj,k=readKey(s,sel.term,sel.ui,sel.li),R0=READ[k],p=$('#panel');
+  if(!R0){p.innerHTML='<p class="muted" style="margin:0">لا يوجد نص قرائي لهذا الدرس بعد.</p>';return}
+  const skill=s==='math'?'قراءة المسائل الرياضية':LS.read;
+  const qs=R0.q.map(x=>({q:x[0],a:x[1],o:shuffle(x[2]),skill}));const done=[];
+  p.innerHTML=`<div class="stack" style="gap:14px"><article class="passage"><div class="eyebrow">اقرأ النص بتمعّن</div><h3>${R0.t}</h3><p>${R0.p}</p></article>
+  <div class="bank">${qs.map((q,i)=>`<div class="bq" data-i="${i}"><div class="qn">${ar(i+1)}. ${q.q}</div><div class="o">${q.o.map(o=>`<button>${esc(o)}</button>`).join('')}</div></div>`).join('')}</div>
+  <div class="sticky-bank"><span id="rs">أجبت عن ${ar(0)} من ${ar(qs.length)}</span><span class="saved">يُحفظ تلقائيًا</span></div></div>`;
+  p.querySelectorAll('.bq').forEach(el=>{const q=qs[+el.dataset.i];el.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    const ok=b.textContent===q.a;done.push(ok);saveAnswer('read',q,ok);
+    el.querySelectorAll('button').forEach(x=>{x.disabled=true;if(x.textContent===q.a)x.classList.add('right')});if(!ok)b.classList.add('wrong');
+    const r=done.filter(Boolean).length;$('#rs').textContent=done.length<qs.length?`أجبت عن ${ar(done.length)} من ${ar(qs.length)} · صحيح ${ar(r)}`:`انتهيت: ${ar(r)} من ${ar(qs.length)} إجابات صحيحة`;
+    if(done.length===qs.length&&!$('#ragain')){const a=document.createElement('button');a.className='btn';a.id='ragain';a.textContent='أعد المحاولة';a.onclick=toolRead;$('#rs').parentNode.appendChild(a)}})});
+}
+
+/* ================= data layer ================= */
+let DB=null,dbState='loading';
+const LOCAL_A='cp_attempts',LOCAL_S='cp_surveys';
+(async()=>{await 0;try{
+  const cfgOk=FIREBASE_CONFIG&&FIREBASE_CONFIG.apiKey&&!FIREBASE_CONFIG.apiKey.startsWith('ضع');
+  if(cfgOk&&window.firebase){firebase.initializeApp(FIREBASE_CONFIG);DB=firebase.firestore();try{await DB.enablePersistence({synchronizeTabs:true})}catch(e){}}
+  }catch(e){DB=null}dbState=DB?'ready':'local';if(DB)await syncLocal();drawNet();startMine();if(view==='dash')renderDash();if(view==='home'){if(sel.ui==null)renderHome();else drawJourney()}})();
+
+async function syncLocal(){
+  for(const [k,col] of [[LOCAL_A,'attempts'],[LOCAL_S,'surveys']]){
+    const rows=store.get(k)||[];if(!rows.length)continue;const left=[];
+    for(const r of rows){try{await DB.collection(col).add(r)}catch(e){left.push(r)}}
+    if(left.length)store.set(k,left);else store.del(k);
+  }
+}
+function netHTML(){return dbState==='ready'?'<span class="net on">متصل بقاعدة البيانات السحابية</span>':dbState==='loading'?'<span class="net">جارٍ الاتصال بالسحابة…</span>':(FIREBASE_CONFIG.apiKey.startsWith('ضع')?'<span class="net off">لم تُربط قاعدة Firebase بعد: الإجابات تُحفظ على هذا الجهاز فقط</span>':'<span class="net off">غير متصل: الإجابات تُحفظ على هذا الجهاز وتُرفع للسحابة عند الاتصال</span>')}
+function drawNet(){document.querySelectorAll('.netslot').forEach(e=>e.innerHTML=netHTML())}
+function saveRec(col,rec){
+  rec.ts=Date.now();
+  if(DB){DB.collection(col).add(rec).catch(()=>{const a=store.get(col===('attempts')?LOCAL_A:LOCAL_S)||[];a.push(rec);store.set(col==='attempts'?LOCAL_A:LOCAL_S,a)})}
+  else{const k=col==='attempts'?LOCAL_A:LOCAL_S;const a=store.get(k)||[];a.push(rec);store.set(k,a)}
+}
+function saveAnswer(mode,q,ok){
+  const L=lessonOf(sel.subj,sel.term,sel.ui,sel.li);
+  const rec={key:me.key,name:me.name,cls:me.cls,subj:sel.subj,term:sel.term,ui:sel.ui,li:sel.li,unit:C[sel.subj][sel.term][sel.ui].u,lesson:L[0],mode,
+    q:String(q.q).replace(/<[^>]+>/g,'').slice(0,240),a:q.a,right:ok?1:0,total:1,skills:{[q.skill]:[ok?1:0,1]}};
+  saveRec('attempts',rec);
+  MY=MY.concat([rec]);drawJourney();drawLessonStat();
+}
+function startMine(){
+  if(!me)return;
+  if(DB){if(mySub)return;try{mySub=DB.collection('attempts').where('key','==',me.key).onSnapshot(s=>{MY=s.docs.map(d=>d.data());drawJourney();drawLessonStat()},()=>{})}catch(e){}}
+  else{MY=(store.get(LOCAL_A)||[]).filter(x=>x.key===me.key)}
+}
+function lessonStats(s,t,ui,li){const rows=MY.filter(x=>x.subj===s&&x.term===t&&x.ui===ui&&x.li===li);const r=rows.reduce((a,x)=>a+(x.right||0),0),n=rows.reduce((a,x)=>a+(x.total||0),0);return{n,r,p:n?Math.round(r/n*100):0}}
+function drawLessonStat(){const el=$('#lstat');if(!el||sel.ui==null)return;const st=lessonStats(sel.subj,sel.term,sel.ui,sel.li);
+  el.textContent=st.n?`حللت ${ar(st.n)} سؤالًا في هذا الدرس، الصحيح منها ${ar(st.r)} (${ar(st.p)}٪). كل إجابة تُحفظ تلقائيًا.`:'كل إجابة تحلّها تُحفظ تلقائيًا في رحلتك.'}
+const modeTool={quiz:'quiz',game:'read',read:'read',bank:'bank'};
+function drawJourney(){
+  const el=$('#journey');if(!el)return;
+  const n=MY.reduce((a,x)=>a+(x.total||0),0),r=MY.reduce((a,x)=>a+(x.right||0),0);
+  const per=k=>{let tot=0,done=0;['1','2'].forEach(t=>C[k][t].forEach((u,ui)=>u.ls.forEach((l,li)=>{tot++;if(lessonStats(k,t,ui,li).n)done++})));return[done,tot]};
+  const [dl,tl]=per('lughati'),[dm,tm]=per('math');
+  const last=MY.slice().sort((x,y)=>(y.ts||0)-(x.ts||0))[0];
+  el.innerHTML=`<div><div class="eyebrow">محفوظة باسمك</div><h2 style="font-size:24px">رحلتي التعليمية</h2></div>
+  <div class="jgrid"><div class="tile"><b>${ar(n)}</b><span>سؤال حللته</span></div><div class="tile"><b>${n?ar(Math.round(r/n*100))+'٪':'—'}</b><span>نسبة الإجابات الصحيحة</span></div><div class="tile"><b>${ar(dl+dm)}</b><span>درس تدرّبت عليه</span></div></div>
+  <div class="bars">${barRow('لغتي',`${ar(dl)} من ${ar(tl)} دروس`,Math.round(dl/tl*100))}${barRow('الرياضيات',`${ar(dm)} من ${ar(tm)} دروس`,Math.round(dm/tm*100))}</div>
+  ${last&&last.ui!=null&&C[last.subj]?.[last.term]?.[last.ui]?.ls[last.li]?`<div class="row" style="justify-content:space-between;align-items:center"><span class="muted">آخر درس: <b style="color:var(--ink)">${esc(last.lesson==='تدريبات الوحدة'?'وحدة '+last.unit:last.lesson)}</b> · ${C[last.subj].name}</span><button class="btn" id="cont">أكمل من حيث توقفت</button></div>`:`<p class="muted" style="margin:0">ابدأ رحلتك باختيار المادة والدرس بالأسفل، وكل سؤال تحلّه سيُحفظ هنا.</p>`}`;
+  const c=$('#cont');if(c)c.onclick=()=>{sel={subj:last.subj,term:last.term,ui:last.ui,li:last.li,tool:modeTool[last.mode]||'quiz'};renderHome();const a=$('#lessonArea');if(a)a.scrollIntoView({behavior:'smooth'})};
+}
+
+/* ================= state & shell ================= */
+const norm=n=>n.trim().replace(/\s+/g,' ').replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي');
+const keyOf=(n,c)=>norm(n)+'|'+c;
+let me=store.get('cp_me');if(me&&!me.key)me.key=keyOf(me.name,me.cls);
+let MY=[],mySub=null;let view=me?'home':'login';
+let sel={subj:null,term:null,ui:null,li:null,tool:'explain'};
+let teacher=false;try{teacher=sessionStorage.getItem('cp_t')==='1'}catch(e){}
+const root=document.getElementById('root');
+
+function shell(heroInner,body){
+  root.innerHTML=`<section class="hero gut"><div class="inner">${heroInner}</div></section><main class="gut"><div class="inner stack">${body}</div></main><footer class="site-foot gut"><div class="inner">إعداد المعلمة: <b>هيا المالكي</b><div class="netslot" style="margin-top:6px">${netHTML()}</div></div></footer>`;
+}
+function topbar(){
+  const navs=me?[['home','الرئيسية'],['survey','قياس الأثر'],['tlogin','لوحة المعلمة']]:[['login','دخول الطالب'],['tlogin','لوحة المعلمة']];
+  const cur=view==='dash'?'tlogin':view==='lesson'?'home':view;
+  return `<div class="topbar"><div class="brand">منصة التدريب المركزي</div>
+  <nav class="nav">${navs.map(([v,t])=>`<button data-go="${v}" aria-current="${cur===v}">${t}</button>`).join('')}${me?'<button data-go="logout">خروج</button>':''}</nav></div>`;
+}
+function wireNav(){root.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go))}
+function go(v){
+  if(v==='logout'){store.del('cp_me');me=null;MY=[];if(mySub){mySub();mySub=null}sel={subj:null,term:null,ui:null,li:null,tool:'explain'};teacher=false;try{sessionStorage.removeItem('cp_t')}catch(e){}v='login'}
+  if(v==='tlogin'&&teacher)v='dash';
+  if(v==='dash'&&!teacher)v='tlogin';
+  if(v!=='dash'&&unsub){unsub.forEach(u=>u());unsub=null}
+  view=v;clearInterval(gameTimer);render();window.scrollTo(0,0);
+}
+function render(){({login:renderLogin,home:renderHome,survey:renderSurvey,tlogin:renderTLogin,dash:renderDash}[view]||renderHome)()}
+
+/* ================= login ================= */
+function renderLogin(){
+  let pick=null;
+  shell(`${topbar()}<div style="padding-top:28px;display:grid;gap:8px;max-width:560px">
+    <div class="school"><div class="sname">الابتدائية العاشرة – طفولة مبكرة</div><div class="sprin">مديرة المدرسة: محسنة المسعودي</div></div><div class="eyebrow">الصف الثالث الابتدائي · لغتي والرياضيات</div>
+    <h1 style="font-size:clamp(32px,7.5vw,50px);font-weight:800">استعدّ للاختبار المركزي</h1>
+    <p style="margin:0;color:var(--muted)">شرح مبسّط لكل درس، أسئلة تدريبية، نصوص للفهم القرائي، وبنك أسئلة كامل.</p></div>`,
+  `<div class="card login stack" style="gap:16px">
+    <h2 style="font-size:24px">مرحبًا بك! سجّل دخولك</h2>
+    <div class="field"><label for="nm">اسمك الثلاثي</label><input type="text" id="nm" autocomplete="name" placeholder="مثال: محمد عبدالله السالم"></div>
+    <div class="field"><label>فصلك</label><div class="cgroups">${[['b','بنين'],['g','بنات']].map(([g,t])=>`<div class="cgroup"><div class="cg-h">${t}</div><div class="crow ${g}">${CLASSES.filter(x=>x[1]===g).map(([c])=>`<button class="cls" data-c="${c}" data-g="${g}" aria-pressed="false">${c.split(' ')[0]}</button>`).join('')}</div></div>`).join('')}</div></div>
+    <div class="err" id="er" aria-live="polite"></div>
+    <button class="btn wide" id="go">ادخل المنصة</button>
+  </div>`);
+  wireNav();
+  root.querySelectorAll('.cls').forEach(b=>b.onclick=()=>{pick=b.dataset.c;root.querySelectorAll('.cls').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+  $('#go').onclick=()=>{const n=$('#nm').value.trim().replace(/\s+/g,' ');
+    if(n.split(' ').length<2){$('#er').textContent='اكتب اسمك الأول واسم العائلة على الأقل.';return}
+    if(!pick){$('#er').textContent='اختر فصلك من القائمة.';return}
+    me={name:n,cls:pick,key:keyOf(n,pick)};store.set('cp_me',me);startMine();go('home')};
+}
+
+/* ================= home ================= */
+function renderHome(){
+  const s=sel.subj,t=sel.term;
+  if(s){document.documentElement.style.setProperty('--cur',C[s].color);document.documentElement.style.setProperty('--cur-soft',C[s].soft)}
+  shell(`${topbar()}<div style="padding-top:24px;display:grid;gap:8px">
+    <div class="school"><div class="sname">الابتدائية العاشرة – طفولة مبكرة</div><div class="sprin">مديرة المدرسة: محسنة المسعودي</div></div>
+    <div class="who">${esc(me.name)} · ${esc(me.cls)}</div>
+    <h1 style="font-size:clamp(28px,6.5vw,42px);font-weight:800">${MY.length?'مرحبًا بعودتك يا':'أهلًا'} ${esc(me.name.split(' ')[0])}، جاهز للتحدي؟</h1></div>`,
+  `<section class="card journey stack" id="journey" style="gap:12px"></section>
+  <section class="card stack" style="gap:14px">
+    <div><div class="eyebrow">تعرّف على الاختبار</div><h2 style="font-size:26px">ما الاختبار المركزي؟</h2></div>
+    <div class="info-grid">
+      <div class="info i1"><span class="tag">ما هو؟</span><h3>اختبار موحّد</h3><p>اختبار تُعدّه جهات التعليم بأسئلة واحدة لجميع طلاب الصف، ويُطبَّق في وقت واحد لقياس إتقان المهارات الأساسية.</p></div>
+      <div class="info i2"><span class="tag">لمن؟</span><h3>الصف الثالث الابتدائي</h3><p>يشمل مادتي لغتي والرياضيات، ويغطي مهارات الفصلين الدراسيين.</p></div>
+      <div class="info i3"><span class="tag">لماذا؟</span><h3>معرفة مستوانا</h3><p>يساعد المدرسة على معرفة نقاط القوة والضعف عند الطلاب، وتحسين طريقة التعليم.</p></div>
+      <div class="info i4"><span class="tag">متى؟</span><h3>تعلنه إدارة التعليم</h3><p>المواعيد تختلف بين المناطق، وتصلك من مدرستك ومعلمتك. تابع إعلانات المدرسة.</p></div>
+    </div>
+    <div class="explain"><div class="rule"><h4 style="color:var(--accent)">كيف أستعد؟</h4><p>راجع شرح الدرس، ثم حلّ الأسئلة، ثم اقرأ نص الفهم القرائي وأجب عن أسئلته، وفي النهاية جرّب بنك الأسئلة كاملًا. اقرأ السؤال جيدًا قبل اختيار الإجابة، ولا تترك سؤالًا بلا إجابة.</p></div></div>
+  </section>
+
+  <section class="card steps">
+    <div class="step-h"><span class="n">١</span>اختر المادة</div>
+    <div class="chips">${['lughati','math'].map(k=>`<button class="chip" data-s="${k}" style="--cur:${C[k].color};--cur-soft:${C[k].soft}" aria-pressed="${s===k}"><span class="g">${C[k].g}</span>${C[k].name}</button>`).join('')}</div>
+    <div class="step-h"><span class="n">٢</span>اختر الفصل الدراسي</div>
+    <div class="chips">${['1','2'].map(k=>`<button class="chip" data-t="${k}" aria-pressed="${t===k}" ${s?'':'disabled'}>${termName(k)}</button>`).join('')}</div>
+    <div class="step-h"><span class="n">٣</span>اختر الدرس</div>
+    <select id="lsel" ${s&&t?'':'disabled'}><option value="">${s&&t?'اختر الدرس…':'اختر المادة والفصل أولًا'}</option>
+    ${s&&t?C[s][t].map((u,ui)=>`<optgroup label="${unitLabel(s,t,ui)}: ${u.u}">${u.ls.map((l,li)=>`<option value="${ui}-${li}" ${sel.ui===ui&&sel.li===li?'selected':''}>${l[0]}${l[0]==='تدريبات الوحدة'?' – '+u.u:''}${(()=>{const st=lessonStats(s,t,ui,li);return st.n?' ✓ '+ar(st.p)+'٪':''})()}</option>`).join('')}</optgroup>`).join(''):''}</select>
+  </section>
+  <div id="lessonArea"></div>`);
+  wireNav();
+  root.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{sel={subj:b.dataset.s,term:sel.term,ui:null,li:null,tool:'explain'};renderHome()});
+  root.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{sel.term=b.dataset.t;sel.ui=sel.li=null;renderHome()});
+  const ls=$('#lsel');ls.onchange=()=>{if(!ls.value){sel.ui=sel.li=null;$('#lessonArea').innerHTML='';return}const [a,b]=ls.value.split('-').map(Number);sel.ui=a;sel.li=b;sel.tool='explain';renderLesson(true)};
+  drawJourney();
+  if(sel.ui!=null)renderLesson(false);
+}
+
+const TOOLS=[['explain','شرح الدرس','ش'],['quiz','أسئلة اختيارية','؟'],['read','الفهم القرائي','ق'],['bank','بنك الأسئلة','∑']];
+function renderLesson(scroll){
+  clearInterval(gameTimer);
+  const s=sel.subj,t=sel.term,L=lessonOf(s,t,sel.ui,sel.li),U=C[s][t][sel.ui];
+  const area=$('#lessonArea');
+  area.innerHTML=`<section class="stack" style="gap:12px">
+    <div><div class="eyebrow">${C[s].name} · ${termName(t)} · ${unitLabel(s,t,sel.ui)}: ${U.u}</div><h2 style="font-size:28px">${L[0]==='تدريبات الوحدة'?'وحدة '+U.u:L[0]}</h2><div class="saved" id="lstat"></div></div>
+    <div class="tools">${TOOLS.map(([k,n,i])=>`<button class="tool" data-tool="${k}" aria-pressed="${sel.tool===k}"><span class="ic">${i}</span>${n}</button>`).join('')}</div>
+    <div class="card panel" id="panel"></div></section>`;
+  area.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{sel.tool=b.dataset.tool;renderLesson(false)});
+  drawLessonStat();
+  ({explain:toolExplain,quiz:toolQuiz,read:toolRead,game:toolRead,bank:toolBank})[sel.tool]();
+  if(scroll)area.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+}
+
+/* ---- tool 1: explanation ---- */
+function toolExplain(){
+  const s=sel.subj,L=lessonOf(s,sel.term,sel.ui,sel.li),p=$('#panel');
+  let html='';
+  if(s==='math'){html=`<div class="rule"><h4>الفكرة</h4><p>${L[2]}</p><div class="ex">مثال: ${L[3]}</div></div>`;
+    const sample=genQ(s,sel.term,sel.ui,sel.li);html+=`<div class="rule"><h4>جرّب بنفسك</h4><p>${sample.q}</p><div class="ex">الإجابة: ${sample.a}</div></div>`}
+  else{html=`<p style="margin:0" class="muted">في هذا الدرس نتدرّب على ${L[1].length>1?'مهارتين':'مهارة'} من مهارات الاختبار:</p>`+L[1].map(f=>`<div class="rule"><h4>${LS[f.skillKey]}</h4><p>${LX[f.skillKey][0]}</p><div class="ex">مثال: ${LX[f.skillKey][1]}</div></div>`).join('')}
+  p.innerHTML=`<div class="explain">${html}<div class="row" style="justify-content:flex-start"><button class="btn" id="toq">فهمت، ابدأ الأسئلة</button></div></div>`;
+  $('#toq').onclick=()=>{sel.tool='quiz';renderLesson(false)};
+}
+
+/* ---- tool 2: quiz ---- */
+let Q=null;
+const qKey=()=>'cp_q_'+me.key+'_'+[sel.subj,sel.term,sel.ui,sel.li].join('-');
+function toolQuiz(fresh){const saved=fresh===true?null:store.get(qKey());Q=saved&&saved.i<saved.qs.length?saved:{qs:genSet(sel.subj,sel.term,sel.ui,sel.li,10),i:0,log:[]};showQ()}
+function showQ(){
+  const p=$('#panel'),q=Q.qs[Q.i];
+  p.innerHTML=`<div class="stack" style="gap:14px"><div class="qtop"><b>السؤال ${ar(Q.i+1)} من ${ar(Q.qs.length)}</b><span class="muted">${esc(q.skill)}</span></div>
+  <div class="bar"><i style="width:${Q.i/Q.qs.length*100}%"></i></div><div class="q">${q.q}</div><div class="opts"></div><div class="fb" aria-live="polite"></div></div>`;
+  const box=p.querySelector('.opts');
+  q.o.forEach(o=>{const b=document.createElement('button');b.className='opt';b.textContent=o;if(/^[\d\/<>=]+$/.test(o))b.style.direction='ltr';b.onclick=()=>{
+    const ok=o===q.a;Q.log.push({skill:q.skill,ok});saveAnswer('quiz',q,ok);store.set(qKey(),{qs:Q.qs,i:Q.i+1,log:Q.log});
+    box.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.textContent===q.a)x.classList.add('right')});
+    const fb=p.querySelector('.fb');if(ok){fb.className='fb good';fb.textContent=['أحسنت!','رائع!','إجابة صحيحة!','ممتاز!'][R(0,3)]}else{b.classList.add('wrong');fb.className='fb bad';fb.textContent='الإجابة الصحيحة: '+q.a}
+    setTimeout(()=>{Q.i++;Q.i<Q.qs.length?showQ():endQuiz()},ok?900:1900)};box.appendChild(b)});
+}
+function endQuiz(){
+  store.del(qKey());
+  const r=Q.log.filter(x=>x.ok).length,pct=Math.round(r/Q.log.length*100);
+  $('#panel').innerHTML=`<div class="result"><div class="eyebrow">نتيجتك</div><div class="num">${ar(pct)}٪</div><div>${ar(r)} إجابات صحيحة من ${ar(Q.log.length)}</div>
+  <p style="margin:0;font-weight:700">${pct>=90?'ممتاز! أنت جاهز لهذا الدرس.':pct>=60?'جيد، تدرّب مرة أخرى لتصل إلى الإتقان.':'راجع شرح الدرس ثم أعد المحاولة.'}</p>
+  <div class="row"><button class="btn" id="ag">أسئلة جديدة</button><button class="btn alt" id="ex">شرح الدرس</button></div></div>`;
+  $('#ag').onclick=()=>toolQuiz(true);$('#ex').onclick=()=>{sel.tool='explain';renderLesson(false)};
+}
+
+let gameTimer=null;
+
+/* ---- tool 4: question bank ---- */
+function toolBank(){
+  const qs=genSet(sel.subj,sel.term,sel.ui,sel.li,20),done=[];
+  const p=$('#panel');
+  p.innerHTML=`<div class="stack" style="gap:12px"><p style="margin:0" class="muted">${ar(qs.length)} سؤالًا في هذا الدرس. اختر إجابة كل سؤال لتعرف إن كانت صحيحة، وتُحفظ كل إجابة في رحلتك تلقائيًا.</p>
+  <div class="bank">${qs.map((q,i)=>`<div class="bq" data-i="${i}"><div class="qn">${ar(i+1)}. ${q.q}</div><div class="o">${q.o.map(o=>`<button style="${/^[\d\/<>=]+$/.test(o)?'direction:ltr':''}">${esc(o)}</button>`).join('')}</div></div>`).join('')}</div>
+  <div class="sticky-bank"><span id="bs">أجبت عن ${ar(0)} من ${ar(qs.length)}</span><span class="saved">يُحفظ تلقائيًا</span></div></div>`;
+  p.querySelectorAll('.bq').forEach(el=>{const i=+el.dataset.i,q=qs[i];el.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    const ok=b.textContent===q.a;done.push({skill:q.skill,ok});saveAnswer('bank',q,ok);
+    el.querySelectorAll('button').forEach(x=>{x.disabled=true;if(x.textContent===q.a)x.classList.add('right')});if(!ok)b.classList.add('wrong');
+    $('#bs').textContent=`أجبت عن ${ar(done.length)} من ${ar(qs.length)} · صحيح ${ar(done.filter(x=>x.ok).length)}`})});
+}
+
+/* ================= survey ================= */
+const SQ=['سهولة استخدام المنصة','وضوح شرح الدروس','فائدة الأسئلة وبنك الأسئلة','فائدة نصوص الفهم القرائي','رضاك العام عن المنصة'];
+const SCALE=[[5,'ممتاز'],[4,'جيد جدًا'],[3,'جيد'],[2,'مقبول'],[1,'ضعيف']];
+function renderSurvey(){
+  const ans={};let ready=null;
+  shell(`${topbar()}<div style="padding-top:24px;display:grid;gap:6px"><div class="who">${esc(me.name)} · ${esc(me.cls)}</div>
+    <h1 style="font-size:clamp(28px,6.5vw,42px);font-weight:800">قياس الأثر</h1><p style="margin:0;color:var(--muted)">رأيك يساعدنا نطوّر المنصة. الاستبيان يأخذ دقيقة واحدة.</p></div>`,
+  `<section class="card" id="sv">
+    ${SQ.map((q,i)=>`<div class="sq"><b>${ar(i+1)}. ${q}</b><div class="scale" data-q="${i}">${SCALE.map(([v,t])=>`<button data-v="${v}" aria-pressed="false"><b>${ar(v)}</b><span>${t}</span></button>`).join('')}</div></div>`).join('')}
+    <div class="sq"><b>${ar(6)}. هل تشعر أنك أصبحت مستعدًا أكثر للاختبار المركزي؟</b><div class="scale scale3" id="rd">${['نعم','إلى حدٍّ ما','لا'].map(t=>`<button data-v="${t}" aria-pressed="false"><span style="font-size:15px">${t}</span></button>`).join('')}</div></div>
+    <div class="sq" style="border:0"><label for="sg"><b>${ar(7)}. اقتراحاتك لتطوير المنصة</b></label><textarea id="sg" rows="4" placeholder="اكتب ما تحب أن نضيفه أو نغيّره…"></textarea></div>
+    <div class="err" id="er" aria-live="polite"></div><button class="btn wide" id="send">أرسل رأيي</button></section>`);
+  wireNav();
+  root.querySelectorAll('.scale[data-q]').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{ans[g.dataset.q]=+b.dataset.v;g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+  $('#rd').querySelectorAll('button').forEach(b=>b.onclick=()=>{ready=b.dataset.v;$('#rd').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+  $('#send').onclick=()=>{if(Object.keys(ans).length<SQ.length||!ready){$('#er').textContent='أجب عن جميع الأسئلة من ١ إلى ٦ قبل الإرسال.';return}
+    saveRec('surveys',{name:me.name,cls:me.cls,ratings:SQ.map((_,i)=>ans[i]),ready,suggestion:$('#sg').value.trim().slice(0,600)});
+    $('#sv').innerHTML=`<div class="empty"><div class="num" style="font-family:var(--display);font-size:48px;color:var(--good)">شكرًا لك!</div><p style="margin:0">وصل رأيك إلى المعلمة والإدارة.</p><button class="btn" data-go="home">العودة للتدريب</button></div>`;wireNav()};
+}
+
+/* ================= teacher ================= */
+function renderTLogin(){
+  shell(`${topbar()}<div style="padding-top:24px"><h1 style="font-size:clamp(28px,6.5vw,42px);font-weight:800">لوحة المعلمة والإدارة</h1><p style="margin:0;color:var(--muted)">تحليل نتائج الطلاب ومهاراتهم وقياس الأثر.</p></div>`,
+  `<div class="card login stack" style="gap:14px"><div class="field"><label for="pw">الرقم السري</label><input type="password" id="pw" inputmode="numeric" autocomplete="off"></div>
+  <div class="err" id="er" aria-live="polite"></div><button class="btn wide" id="ok">دخول</button></div>`);
+  wireNav();
+  const tryIn=()=>{const v=$('#pw').value.trim().replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+    if(v==='0505'){teacher=true;try{sessionStorage.setItem('cp_t','1')}catch(e){}go('dash')}else $('#er').textContent='الرقم السري غير صحيح.'};
+  $('#ok').onclick=tryIn;$('#pw').onkeydown=e=>{if(e.key==='Enter')tryIn()};
+}
+
+let unsub=null,AT=[],SV=[],demo=false;
+let D={term:'1',subj:'all',cls:'all'};
+function startData(){
+  if(unsub||!DB)return;unsub=[];
+  unsub.push(DB.collection('attempts').onSnapshot(s=>{AT=s.docs.map(d=>Object.assign({_id:d.id},d.data()));if(view==='dash')drawDash()},()=>{}));
+  unsub.push(DB.collection('surveys').onSnapshot(s=>{SV=s.docs.map(d=>d.data());if(view==='dash')drawDash()},()=>{}));
+}
+let deleting=false;
+function askDelete(k,n){
+  const box=$('#delbox');if(!box)return;box.hidden=false;
+  box.innerHTML=`<div class="confirm"><b>حذف إجابات ${esc(n)}؟</b><p style="margin:0" class="muted">لا يمكن التراجع عن الحذف. ستُمسح الإجابات من رحلة الطالب ومن التحليلات.</p>
+  <div class="row" style="justify-content:flex-start"><button class="btn danger" id="dTerm">حذف إجابات ${termName(D.term)} فقط</button><button class="btn danger" id="dAll">حذف كل إجاباته</button><button class="btn alt" id="dNo">إلغاء</button></div><div class="err" id="dMsg" aria-live="polite"></div></div>`;
+  box.scrollIntoView({block:'nearest'});
+  $('#dNo').onclick=()=>{box.hidden=true;box.innerHTML=''};
+  $('#dTerm').onclick=()=>doDelete(k,x=>x.term===D.term);
+  $('#dAll').onclick=()=>doDelete(k,()=>true);
+}
+async function doDelete(k,f){
+  if(deleting)return;deleting=true;const msg=$('#dMsg');
+  const match=x=>(x.key||(x.name+'|'+x.cls))===k&&f(x);
+  try{
+    if(demo){window.__demo.at=window.__demo.at.filter(x=>!match(x))}
+    else if(DB){const ids=AT.filter(match).map(x=>x._id).filter(Boolean);let i=0;
+      for(const id of ids){await DB.collection('attempts').doc(id).delete();i++;if(msg)msg.textContent=`جارٍ الحذف… ${ar(i)} من ${ar(ids.length)}`}}
+    else{store.set(LOCAL_A,(store.get(LOCAL_A)||[]).filter(x=>!match(x)))}
+    deleting=false;drawDash();
+  }catch(e){deleting=false;if(msg)msg.textContent='تعذّر الحذف. تأكدي من اتصال الإنترنت ومن قواعد Firebase ثم حاولي مرة أخرى.'}
+}
+function demoData(){
+  const names=['أحمد','سعد','فهد','نواف','يوسف','سارة','ريم','نورة','لمى','جود','هيا','دانة'];const at=[],sv=[];
+  CLASSES.forEach(([c,g],ci)=>{for(let k=0;k<5;k++){const n=names[(g==='b'?0:5)+R(0,g==='b'?4:6)]+' '+['العتيبي','القحطاني','الشهري','الحربي','الزهراني'][k];
+    ['lughati','math'].forEach(s=>['1','2'].forEach(t=>C[s][t].forEach((u,ui)=>u.ls.forEach((l,li)=>{if(Math.random()<.5)return;const sk={};
+      (s==='math'?[l[0]]:l[1].map(f=>LS[f.skillKey])).forEach(x=>{const tot=5,base=.55+ci*.05+(x.length%5)*.05;let r=0;for(let i=0;i<tot;i++)if(Math.random()<Math.min(base,.97))r++;sk[x]=[r,tot]});
+      const right=Object.values(sk).reduce((a,v)=>a+v[0],0),total=Object.values(sk).reduce((a,v)=>a+v[1],0);
+      at.push({name:n,cls:c,subj:s,term:t,unit:u.u,lesson:l[0],mode:['quiz','read','bank'][R(0,2)],right,total,skills:sk})}))));
+    if(Math.random()<.7)sv.push({name:n,cls:c,ratings:SQ.map(()=>R(3,5)),ready:['نعم','نعم','إلى حدٍّ ما'][R(0,2)],suggestion:['','أتمنى إضافة دروس العلوم','اللعبة ممتعة جدًا','أريد أسئلة أكثر في القسمة',''][R(0,4)]})}});
+  return{at,sv};
+}
+function renderDash(){
+  if(!teacher){go('tlogin');return}
+  shell(`${topbar()}<div style="padding-top:24px;display:grid;gap:6px"><div class="who">لوحة المعلمة والإدارة</div>
+    <h1 style="font-size:clamp(28px,6.5vw,42px);font-weight:800">تحليل تقدّم الطلاب</h1></div>`,
+  `<div class="filters">
+    <div class="seg" role="group" aria-label="الفصل الدراسي">${['1','2'].map(t=>`<button data-dt="${t}" aria-pressed="${D.term===t}">${termName(t)}</button>`).join('')}</div>
+    <div class="seg" role="group" aria-label="المادة">${[['all','المادتان'],['lughati','لغتي'],['math','الرياضيات']].map(([k,n])=>`<button data-ds="${k}" aria-pressed="${D.subj===k}">${n}</button>`).join('')}</div>
+    <select id="dc" aria-label="الفصل"><option value="all">كل الفصول</option>${CLASSES.map(([c])=>`<option ${D.cls===c?'selected':''}>${c}</option>`).join('')}</select>
+  </div><div id="dbody" class="stack"></div>`);
+  wireNav();
+  root.querySelectorAll('[data-dt]').forEach(b=>b.onclick=()=>{D.term=b.dataset.dt;renderDash()});
+  root.querySelectorAll('[data-ds]').forEach(b=>b.onclick=()=>{D.subj=b.dataset.ds;renderDash()});
+  $('#dc').onchange=e=>{D.cls=e.target.value;drawDash()};
+  if(DB)startData();
+  drawDash();
+}
+function agg(rows){let r=0,t=0;rows.forEach(x=>{r+=x.right||0;t+=x.total||0});return t?Math.round(r/t*100):null}
+function skillAgg(rows){const m={};rows.forEach(x=>Object.entries(x.skills||{}).forEach(([k,v])=>{m[k]=m[k]||[0,0];m[k][0]+=v[0];m[k][1]+=v[1]}));return Object.entries(m).filter(([,v])=>v[1]).map(([k,v])=>[k,Math.round(v[0]/v[1]*100),v[1]])}
+function barRow(label,sub,p){return `<div class="brow"><div class="lbl">${label}${sub?`<small>${sub}</small>`:''}</div><div class="track"><span class="mark" style="right:80%"></span><span class="mark" style="right:60%"></span><i class="lv-${p==null?'mid':lvl(p)}" style="width:${p||0}%;margin-inline-start:0"></i></div><div class="v">${p==null?'—':ar(p)+'٪'}</div></div>`}
+function drawDash(){
+  const body=$('#dbody');if(!body)return;
+  let at,sv,src;
+  if(demo){const d=window.__demo||(window.__demo=demoData());at=d.at;sv=d.sv;src='demo'}
+  else if(dbState==='loading'){body.innerHTML=`<div class="card empty"><b>جارٍ تحميل البيانات…</b></div>`;return}
+  else if(DB){at=AT;sv=SV;src='db'}
+  else{at=store.get(LOCAL_A)||[];sv=store.get(LOCAL_S)||[];src='local'}
+  const T=at.filter(x=>x.term===D.term&&(D.subj==='all'||x.subj===D.subj));
+  const TC=D.cls==='all'?T:T.filter(x=>x.cls===D.cls);
+  const students=new Set(TC.map(x=>x.key||(x.name+'|'+x.cls)));const qsum=rows=>rows.reduce((a,x)=>a+(x.total||0),0);
+  const svc=D.cls==='all'?sv:sv.filter(x=>x.cls===D.cls);
+  const sat=svc.length?Math.round(svc.reduce((a,x)=>a+x.ratings[4],0)/svc.length/5*100):null;
+  let html='';
+  if(src==='local')html+=`<div class="notice">تظهر هنا النتائج المحفوظة على هذا الجهاز فقط. لكي تصل نتائج جميع الطلاب، اربطي المنصة بقاعدة Firebase كما في خطوات التشغيل.</div>`;
+  if(src==='demo')html+=`<div class="notice">هذه بيانات تجريبية للمعاينة فقط وليست نتائج حقيقية. <button class="btn alt" id="nodemo" style="padding:4px 12px;margin-inline-start:6px">إخفاء</button></div>`;
+  if(!T.length&&!demo){html+=`<div class="card empty"><h3 style="font-size:22px">لا توجد نتائج بعد لـ${termName(D.term)}</h3><p class="muted" style="margin:0">ستظهر التحليلات هنا عندما يبدأ الطلاب حلّ الأسئلة واللعبة وبنك الأسئلة.</p><button class="btn" id="demo">معاينة ببيانات تجريبية</button></div>`;
+    body.innerHTML=html;$('#demo').onclick=()=>{demo=true;drawDash()};return}
+  // tiles
+  html+=`<div class="tiles"><div class="tile"><b>${ar(students.size)}</b><span>طالب وطالبة</span></div><div class="tile"><b>${ar(qsum(TC))}</b><span>سؤال محلول</span></div>
+  <div class="tile"><b style="color:var(--${agg(TC)==null?'muted':lvl(agg(TC))==='good'?'good':lvl(agg(TC))==='mid'?'warn':'bad'})">${agg(TC)==null?'—':ar(agg(TC))+'٪'}</b><span>متوسط الإتقان</span></div>
+  <div class="tile"><b>${sat==null?'—':ar(sat)+'٪'}</b><span>الرضا عن المنصة</span></div></div>`;
+  // classes progress
+  html+=`<section class="card stack" style="gap:14px"><div><div class="eyebrow">${termName(D.term)}</div><h2 style="font-size:22px">تقدّم الفصول جميعها</h2></div>
+  <div class="legend"><span><i class="lv-good"></i>٨٠٪ فأكثر قوة</span><span><i class="lv-mid"></i>٦٠–٧٩٪ متوسط</span><span><i class="lv-bad"></i>أقل من ٦٠٪ ضعف</span></div><div class="bars">`;
+  CLASSES.forEach(([c])=>{const rows=T.filter(x=>x.cls===c);const n=new Set(rows.map(x=>x.key||x.name)).size;
+    if(D.subj==='all'){html+=barRow(c,`${ar(n)} طالب · لغتي ${agg(rows.filter(x=>x.subj==='lughati'))==null?'—':ar(agg(rows.filter(x=>x.subj==='lughati')))+'٪'} · رياضيات ${agg(rows.filter(x=>x.subj==='math'))==null?'—':ar(agg(rows.filter(x=>x.subj==='math')))+'٪'}`,agg(rows))}
+    else html+=barRow(c,`${ar(n)} طالب · ${ar(qsum(rows))} سؤال`,agg(rows))});
+  html+=`</div></section>`;
+  // skills
+  const subjects=D.subj==='all'?['lughati','math']:[D.subj];
+  subjects.forEach(s=>{
+    const rows=TC.filter(x=>x.subj===s);const sk=skillAgg(rows);const order=skillsOf(s,D.term);
+    const sorted=sk.slice().sort((a,b)=>b[1]-a[1]);
+    html+=`<section class="card stack" style="gap:14px"><div><div class="eyebrow">${D.cls==='all'?'جميع الفصول':D.cls} · ${termName(D.term)}</div><h2 style="font-size:22px">مهارات ${C[s].name}: القوة والضعف</h2></div>`;
+    if(!sk.length){html+=`<p class="muted" style="margin:0">لا توجد محاولات في هذه المادة بعد.</p></section>`;return}
+    const strong=sorted.filter(x=>x[1]>=80).slice(0,4),weak=sorted.slice().reverse().filter(x=>x[1]<70).slice(0,4);
+    html+=`<div class="sw"><div><h3 style="font-size:17px;color:var(--good);margin-bottom:8px">نقاط القوة</h3><ul>${strong.length?strong.map(x=>`<li>${x[0]}<b>${ar(x[1])}٪</b></li>`).join(''):'<li class="muted">لا توجد مهارة وصلت ٨٠٪ بعد</li>'}</ul></div>
+    <div><h3 style="font-size:17px;color:var(--bad);margin-bottom:8px">تحتاج إلى علاج</h3><ul>${weak.length?weak.map(x=>`<li>${x[0]}<b>${ar(x[1])}٪</b></li>`).join(''):'<li class="muted">لا توجد مهارة أقل من ٧٠٪</li>'}</ul></div></div>
+    <div class="bars">${order.map(k=>{const f=sk.find(x=>x[0]===k);return barRow(k,f?`${ar(f[2])} إجابة`:'لم يُتدرَّب عليها',f?f[1]:null)}).join('')}</div></section>`;
+  });
+  // students (all classes or one class) with delete
+  {const by={};TC.forEach(x=>{const k=x.key||(x.name+'|'+x.cls);(by[k]=by[k]||[]).push(x)});const tq=rows=>rows.reduce((a,x)=>a+(x.total||0),0);
+    const list=Object.entries(by).map(([k,rows])=>{const sk=skillAgg(rows).sort((a,b)=>a[1]-b[1]);return{k,n:rows[0].name,c:rows[0].cls,att:tq(rows),p:agg(rows),weak:sk[0]}}).sort((a,b)=>b.p-a.p);
+    const all=D.cls==='all';
+    html+=`<section class="card stack" style="gap:12px"><div><div class="eyebrow">${all?'جميع الفصول':'تحليل الفصل'} · ${termName(D.term)}</div><h2 style="font-size:22px">${all?'الطلاب':'طلاب '+D.cls}</h2></div>
+    <div id="delbox" hidden></div>
+    <div class="tbl"><table><thead><tr><th>الطالب</th>${all?'<th>الفصل</th>':''}<th>الأسئلة</th><th>الإتقان</th><th>المستوى</th><th>أضعف مهارة</th><th></th></tr></thead><tbody>
+    ${list.map(s=>`<tr><td>${esc(s.n)}</td>${all?`<td>${esc(s.c)}</td>`:''}<td class="num">${ar(s.att)}</td><td class="num">${ar(s.p)}٪</td><td><span class="pill p-${lvl(s.p)}">${lvlName(s.p)}</span></td><td>${s.weak?esc(s.weak[0])+' ('+ar(s.weak[1])+'٪)':'—'}</td><td><button class="delbtn" data-k="${esc(s.k)}" data-n="${esc(s.n)}">حذف الإجابات</button></td></tr>`).join('')}
+    </tbody></table></div></section>`;}
+  // survey
+  html+=`<section class="card stack" style="gap:14px"><div><div class="eyebrow">${D.cls==='all'?'جميع الفصول':D.cls} · ${ar(svc.length)} استجابة</div><h2 style="font-size:22px">قياس الأثر</h2></div>`;
+  if(!svc.length)html+=`<p class="muted" style="margin:0">لم يُرسل أي استبيان بعد.</p>`;
+  else{html+=`<div class="bars">${SQ.map((q,i)=>barRow(q,'',Math.round(svc.reduce((a,x)=>a+x.ratings[i],0)/svc.length/5*100))).join('')}</div>`;
+    const rc={};svc.forEach(x=>rc[x.ready]=(rc[x.ready]||0)+1);
+    html+=`<div class="sw" style="grid-template-columns:repeat(3,1fr)">${['نعم','إلى حدٍّ ما','لا'].map(k=>`<div class="tile"><b>${ar(Math.round((rc[k]||0)/svc.length*100))}٪</b><span>مستعد: ${k}</span></div>`).join('')}</div>`;
+    const sg=svc.filter(x=>x.suggestion).slice(-12).reverse();
+    html+=`<h3 style="font-size:17px">الاقتراحات</h3><div class="sugg">${sg.length?sg.map(x=>`<div>${esc(x.suggestion)}<br><small>${esc(x.name)} · ${esc(x.cls)}</small></div>`).join(''):'<p class="muted" style="margin:0">لا توجد اقتراحات مكتوبة.</p>'}</div>`}
+  html+=`</section>`;
+  body.innerHTML=html;
+  const nd=$('#nodemo');if(nd)nd.onclick=()=>{demo=false;drawDash()};
+  body.querySelectorAll('.delbtn').forEach(b=>b.onclick=()=>askDelete(b.dataset.k,b.dataset.n));
+}
+
+render();
+</script>
+</body>
+</html>
