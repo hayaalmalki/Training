@@ -176,6 +176,16 @@ td.num{font-variant-numeric:tabular-nums;font-weight:700}
 .passage{background:var(--butter);border-radius:16px;padding:16px 18px;display:grid;gap:6px}
 .passage h3{font-size:22px;color:var(--accent)}
 .passage p{margin:0;font-size:19px;line-height:2;max-width:65ch}
+.models{display:grid;gap:12px}
+.model{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.m-ic{width:52px;height:60px;border-radius:10px;background:var(--cur-soft);color:var(--cur);display:grid;place-items:center;font-weight:800;font-size:14px;letter-spacing:.04em;flex:none}
+.m-body{flex:1;min-width:140px;display:grid;gap:2px}
+.m-body h3{font-size:20px}
+.m-open{text-decoration:none;display:inline-block}
+.m-act{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.upform{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.upform input[type=file]{padding:10px;font-size:15px}
+@media (max-width:640px){.upform{grid-template-columns:1fr}}
 .sugg{display:grid;gap:8px}
 .sugg div{background:var(--bg);border-radius:12px;padding:10px 12px;font-size:15px}
 .sugg small{color:var(--muted)}
@@ -482,7 +492,7 @@ const LOCAL_A='cp_attempts',LOCAL_S='cp_surveys';
 (async()=>{await 0;try{
   const cfgOk=FIREBASE_CONFIG&&FIREBASE_CONFIG.apiKey&&!FIREBASE_CONFIG.apiKey.startsWith('ضع');
   if(cfgOk&&window.firebase){firebase.initializeApp(FIREBASE_CONFIG);DB=firebase.firestore();try{await DB.enablePersistence({synchronizeTabs:true})}catch(e){}}
-  }catch(e){DB=null}dbState=DB?'ready':'local';if(DB)await syncLocal();drawNet();startMine();if(view==='dash')renderDash();if(view==='home'){if(sel.ui==null)renderHome();else drawJourney()}})();
+  }catch(e){DB=null}dbState=DB?'ready':'local';if(DB)await syncLocal();drawNet();startMine();if(view==='dash')renderDash();if(view==='models')drawModelList();if(view==='home'){if(sel.ui==null)renderHome();else drawJourney()}})();
 
 async function syncLocal(){
   for(const [k,col] of [[LOCAL_A,'attempts'],[LOCAL_S,'surveys']]){
@@ -540,7 +550,7 @@ function shell(heroInner,body){
   root.innerHTML=`<section class="hero gut"><div class="inner">${heroInner}</div></section><main class="gut"><div class="inner stack">${body}</div></main><footer class="site-foot gut"><div class="inner">إعداد المعلمة: <b>هيا المالكي</b><div class="netslot" style="margin-top:6px">${netHTML()}</div></div></footer>`;
 }
 function topbar(){
-  const navs=me?[['home','الرئيسية'],['survey','قياس الأثر'],['tlogin','لوحة المعلمة']]:[['login','دخول الطالب'],['tlogin','لوحة المعلمة']];
+  const navs=me?[['home','الرئيسية'],['models','نماذج الاختبارات'],['survey','قياس الأثر'],['tlogin','لوحة المعلمة']]:[['login','دخول الطالب'],['tlogin','لوحة المعلمة']];
   const cur=view==='dash'?'tlogin':view==='lesson'?'home':view;
   return `<div class="topbar"><div class="brand">منصة التدريب المركزي</div>
   <nav class="nav">${navs.map(([v,t])=>`<button data-go="${v}" aria-current="${cur===v}">${t}</button>`).join('')}${me?'<button data-go="logout">خروج</button>':''}</nav></div>`;
@@ -553,7 +563,7 @@ function go(v){
   if(v!=='dash'&&unsub){unsub.forEach(u=>u());unsub=null}
   view=v;clearInterval(gameTimer);render();window.scrollTo(0,0);
 }
-function render(){({login:renderLogin,home:renderHome,survey:renderSurvey,tlogin:renderTLogin,dash:renderDash}[view]||renderHome)()}
+function render(){({login:renderLogin,home:renderHome,survey:renderSurvey,models:renderModels,tlogin:renderTLogin,dash:renderDash}[view]||renderHome)()}
 
 /* ================= login ================= */
 function renderLogin(){
@@ -680,6 +690,103 @@ function toolBank(){
     $('#bs').textContent=`أجبت عن ${ar(done.length)} من ${ar(qs.length)} · صحيح ${ar(done.filter(x=>x.ok).length)}`})});
 }
 
+/* ================= central exam models (PDF, view only; uploaded by the teacher) ================= */
+const CHUNK=700000; // حجم كل جزء من الملف داخل قاعدة البيانات
+const MAX_PDF=10*1024*1024;
+let MODELS=[],modSub=null,MS={subj:'math',term:'1'};
+function once(q){return new Promise((res,rej)=>{let u=null,done=false;u=q.onSnapshot(sn=>{if(done)return;done=true;res(sn);setTimeout(()=>{try{u&&u()}catch(e){}})},e=>{if(!done){done=true;rej(e)}})})}
+function watchModels(cb){
+  if(!DB){MODELS=[];cb();return}
+  if(modSub){cb();return}
+  modSub=DB.collection('models').onSnapshot(sn=>{MODELS=sn.docs.map(d=>Object.assign({_id:d.id},d.data())).sort((x,y)=>(x.ts||0)-(y.ts||0));
+    if(view==='models')drawModelList();if(view==='dash')drawModelAdmin()},()=>{});
+  cb();
+}
+const fmtSize=b=>b>=1048576?ar((b/1048576).toFixed(1))+' م.ب':ar(Math.max(1,Math.round(b/1024)))+' ك.ب';
+async function loadPdf(m){
+  const sn=await once(DB.collection('modelChunks').where('mid','==',m._id));
+  const parts=sn.docs.map(d=>d.data()).sort((x,y)=>x.i-y.i);
+  if(parts.length!==m.chunks)throw new Error('incomplete');
+  const b64=parts.map(x=>x.d).join('');const bin=atob(b64);const u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);
+  return URL.createObjectURL(new Blob([u8],{type:'application/pdf'}));
+}
+function renderModels(){
+  shell(`${topbar()}<div style="padding-top:24px;display:grid;gap:6px"><div class="who">${esc(me.name)} · ${esc(me.cls)}</div>
+    <h1 style="font-size:clamp(28px,6.5vw,42px);font-weight:800">نماذج الاختبارات المركزية</h1>
+    <p style="margin:0;color:var(--muted)">نماذج للاطلاع والتعرّف على شكل أسئلة الاختبار. افتح النموذج واقرأه، أو نزّله لحلّه على الورق.</p></div>`,
+  `<section class="card steps">
+    <div class="step-h"><span class="n">١</span>اختر المادة</div>
+    <div class="chips">${['lughati','math'].map(k=>`<button class="chip" data-ms="${k}" style="--cur:${C[k].color};--cur-soft:${C[k].soft}" aria-pressed="${MS.subj===k}"><span class="g">${C[k].g}</span>${C[k].name}</button>`).join('')}</div>
+    <div class="step-h"><span class="n">٢</span>اختر الفصل الدراسي</div>
+    <div class="chips">${['1','2'].map(k=>`<button class="chip" data-mt="${k}" aria-pressed="${MS.term===k}">${termName(k)}</button>`).join('')}</div>
+  </section><div id="mlist"></div>`);
+  wireNav();
+  root.querySelectorAll('[data-ms]').forEach(b=>b.onclick=()=>{MS.subj=b.dataset.ms;renderModels()});
+  root.querySelectorAll('[data-mt]').forEach(b=>b.onclick=()=>{MS.term=b.dataset.mt;renderModels()});
+  watchModels(drawModelList);
+}
+function drawModelList(){
+  const box=$('#mlist');if(!box)return;
+  if(dbState==='loading'){box.innerHTML='<div class="card empty"><b>جارٍ تحميل النماذج…</b></div>';return}
+  if(!DB){box.innerHTML='<div class="card empty"><h3 style="font-size:21px">النماذج غير متاحة الآن</h3><p class="muted" style="margin:0">تحتاج المنصة إلى الاتصال بالإنترنت لعرض النماذج.</p></div>';return}
+  const list=MODELS.filter(m=>m.subj===MS.subj&&m.term===MS.term);
+  box.innerHTML=list.length?`<div class="models">${list.map(m=>`<article class="model" style="--cur:${C[m.subj].color};--cur-soft:${C[m.subj].soft}">
+      <div class="m-ic">PDF</div><div class="m-body"><div class="eyebrow">${C[m.subj].name} · ${termName(m.term)} · ${fmtSize(m.size||0)}</div><h3>${esc(m.title)}</h3></div>
+      <div class="m-act" data-id="${m._id}"><button class="btn m-load">افتح النموذج</button></div></article>`).join('')}</div>`
+    :`<div class="card empty"><h3 style="font-size:21px">لا توجد نماذج بعد</h3><p class="muted" style="margin:0">ستُضاف نماذج ${C[MS.subj].name} لـ${termName(MS.term)} قريبًا.</p></div>`;
+  box.querySelectorAll('.m-act').forEach(el=>{const m=MODELS.find(x=>x._id===el.dataset.id);el.querySelector('.m-load').onclick=async e=>{
+    const btn=e.currentTarget;btn.disabled=true;btn.textContent='جارٍ التحميل…';
+    try{const url=await loadPdf(m);const fn=(m.title||'نموذج')+'.pdf';
+      el.innerHTML=`<a class="btn m-open" href="${url}" target="_blank" rel="noopener">اعرض الملف</a><a class="btn alt m-open" href="${url}" download="${esc(fn)}">تنزيل</a>`}
+    catch(err){btn.disabled=false;btn.textContent='افتح النموذج';el.insertAdjacentHTML('beforeend','<div class="err">تعذّر تحميل النموذج. تأكد من الإنترنت وحاول مرة أخرى.</div>')}}});
+}
+
+/* ---- teacher: upload & manage models ---- */
+let upBusy=false,upFlash='';
+function drawModelAdmin(){
+  const box=$('#madmin');if(!box)return;
+  if(!DB){box.innerHTML=`<section class="card stack" style="gap:10px"><h2 style="font-size:22px">نماذج الاختبارات المركزية</h2><div class="notice">رفع النماذج يحتاج الاتصال بقاعدة البيانات السحابية.</div></section>`;return}
+  if(upBusy)return;
+  box.innerHTML=`<section class="card stack" style="gap:14px"><div><div class="eyebrow">يراها الطلاب في خانة «نماذج الاختبارات»</div><h2 style="font-size:22px">نماذج الاختبارات المركزية</h2></div>
+    <div class="upform">
+      <div class="field"><label for="mt">اسم النموذج</label><input type="text" id="mt" placeholder="مثال: النموذج الأول" maxlength="100"></div>
+      <div class="field"><label for="msj">المادة</label><select id="msj"><option value="math">الرياضيات</option><option value="lughati">لغتي</option></select></div>
+      <div class="field"><label for="mtr">الفصل الدراسي</label><select id="mtr"><option value="1">الفصل الدراسي الأول</option><option value="2">الفصل الدراسي الثاني</option></select></div>
+      <div class="field"><label for="mf">ملف PDF (حتى ١٠ م.ب)</label><input type="file" id="mf" accept="application/pdf,.pdf"></div>
+    </div>
+    <div class="err" id="mErr" aria-live="polite" style="${upFlash?'color:var(--good)':''}">${upFlash}</div>
+    <div class="row" style="justify-content:flex-start"><button class="btn" id="mUp">ارفع النموذج</button></div>
+    <h3 style="font-size:17px">النماذج المرفوعة (${ar(MODELS.length)})</h3>
+    <div class="models">${MODELS.length?MODELS.map(m=>`<article class="model" style="--cur:${C[m.subj].color};--cur-soft:${C[m.subj].soft}"><div class="m-ic">PDF</div>
+      <div class="m-body"><div class="eyebrow">${C[m.subj].name} · ${termName(m.term)} · ${fmtSize(m.size||0)}</div><h3>${esc(m.title)}</h3></div>
+      <div class="m-act" data-id="${m._id}"><button class="delbtn mdel">حذف</button></div></article>`).join(''):'<p class="muted" style="margin:0">لم يُرفع أي نموذج بعد.</p>'}</div>
+  </section>`;
+  $('#mUp').onclick=uploadModel;
+  box.querySelectorAll('.m-act').forEach(el=>{el.querySelector('.mdel').onclick=()=>{
+    const m=MODELS.find(x=>x._id===el.dataset.id);
+    el.innerHTML=`<span class="muted" style="font-size:14px">حذف «${esc(m.title)}»؟</span><button class="btn danger" style="padding:6px 12px">نعم، احذف</button><button class="btn alt" style="padding:6px 12px">إلغاء</button>`;
+    const [yes,no]=el.querySelectorAll('button');no.onclick=drawModelAdmin;
+    yes.onclick=async()=>{yes.disabled=true;yes.textContent='جارٍ الحذف…';
+      try{await DB.collection('models').doc(m._id).delete();for(let i=0;i<(m.chunks||0);i++){try{await DB.collection('modelChunks').doc(m._id+'_'+i).delete()}catch(e){}}}
+      catch(e){yes.disabled=false;yes.textContent='نعم، احذف';el.insertAdjacentHTML('beforeend','<div class="err">تعذّر الحذف، حاولي مرة أخرى.</div>')}}}});
+}
+async function uploadModel(){
+  const err=$('#mErr'),title=$('#mt').value.trim(),subj=$('#msj').value,term=$('#mtr').value,f=$('#mf').files[0];
+  if(!title){err.textContent='اكتبي اسم النموذج.';return}
+  if(!f){err.textContent='اختاري ملف PDF.';return}
+  if(!/\.pdf$/i.test(f.name)&&f.type!=='application/pdf'){err.textContent='الملف يجب أن يكون بصيغة PDF.';return}
+  if(f.size>MAX_PDF){err.textContent=`حجم الملف ${fmtSize(f.size)}، والحد الأقصى ١٠ م.ب. صغّري الملف ثم أعيدي المحاولة.`;return}
+  upFlash='';upBusy=true;const btn=$('#mUp');btn.disabled=true;err.className='err';err.style.color='var(--muted)';
+  try{
+    const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]||'');r.onerror=rej;r.readAsDataURL(f)});
+    const id='m'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+    const n=Math.ceil(b64.length/CHUNK);
+    for(let i=0;i<n;i++){err.textContent=`جارٍ الرفع… ${ar(Math.round(i/n*100))}٪`;await DB.collection('modelChunks').doc(id+'_'+i).set({mid:id,i,d:b64.slice(i*CHUNK,(i+1)*CHUNK)})}
+    await DB.collection('models').doc(id).set({title:title.slice(0,100),subj,term,size:f.size,chunks:n,ts:Date.now()});
+    upBusy=false;upFlash='تم رفع النموذج «'+esc(title)+'»، ويظهر الآن للطلاب.';drawModelAdmin()
+  }catch(e){upBusy=false;btn.disabled=false;err.style.color='';err.textContent='تعذّر رفع الملف. تأكدي من الإنترنت ومن قواعد Firebase ثم حاولي مرة أخرى.'}
+}
+
 /* ================= survey ================= */
 const SQ=['سهولة استخدام المنصة','وضوح شرح الدروس','فائدة الأسئلة وبنك الأسئلة','فائدة نصوص الفهم القرائي','رضاك العام عن المنصة'];
 const SCALE=[[5,'ممتاز'],[4,'جيد جدًا'],[3,'جيد'],[2,'مقبول'],[1,'ضعيف']];
@@ -757,12 +864,13 @@ function renderDash(){
     <div class="seg" role="group" aria-label="الفصل الدراسي">${['1','2'].map(t=>`<button data-dt="${t}" aria-pressed="${D.term===t}">${termName(t)}</button>`).join('')}</div>
     <div class="seg" role="group" aria-label="المادة">${[['all','المادتان'],['lughati','لغتي'],['math','الرياضيات']].map(([k,n])=>`<button data-ds="${k}" aria-pressed="${D.subj===k}">${n}</button>`).join('')}</div>
     <select id="dc" aria-label="الفصل"><option value="all">كل الفصول</option>${CLASSES.map(([c])=>`<option ${D.cls===c?'selected':''}>${c}</option>`).join('')}</select>
-  </div><div id="dbody" class="stack"></div>`);
+  </div><div id="dbody" class="stack"></div><div id="madmin"></div>`);
   wireNav();
   root.querySelectorAll('[data-dt]').forEach(b=>b.onclick=()=>{D.term=b.dataset.dt;renderDash()});
   root.querySelectorAll('[data-ds]').forEach(b=>b.onclick=()=>{D.subj=b.dataset.ds;renderDash()});
   $('#dc').onchange=e=>{D.cls=e.target.value;drawDash()};
   if(DB)startData();
+  watchModels(drawModelAdmin);
   drawDash();
 }
 function agg(rows){let r=0,t=0;rows.forEach(x=>{r+=x.right||0;t+=x.total||0});return t?Math.round(r/t*100):null}
